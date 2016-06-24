@@ -1,0 +1,8 @@
+#BlueJ class context
+comment0.params=
+comment0.target=GUI()
+comment1.params=
+comment1.target=void\ leereButtonBeschriftung()
+comment2.params=k
+comment2.target=void\ actionPerformed(java.awt.event.ActionEvent)
+numComments=3

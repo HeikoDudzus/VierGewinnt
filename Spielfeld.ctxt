@@ -1,0 +1,14 @@
+#BlueJ class context
+comment0.params=
+comment0.target=Spielfeld()
+comment1.params=pX\ pY
+comment1.target=void\ setzeXaufFeld(int,\ int)
+comment2.params=pX\ pY
+comment2.target=void\ setzeOaufFeld(int,\ int)
+comment3.params=pX\ pY
+comment3.target=java.lang.String\ gibZustandDesFeldes(int,\ int)
+comment4.params=
+comment4.target=boolean\ gibIstSpielfeldVoll()
+comment5.params=
+comment5.target=void\ setzeNeuesSpielfeld()
+numComments=6
