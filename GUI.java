@@ -1,3 +1,8 @@
+/**
+ * @author Gerrit (Die Hinterbänkler)
+ * @version 2016-06-12
+ */
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
