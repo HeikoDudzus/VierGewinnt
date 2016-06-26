@@ -13,6 +13,7 @@ public class GUI extends JFrame implements ActionListener
     private JButton[][] buttons;
     private JButton neuesSpiel;
     private VierGewinntSpiel vierGewinntSpiel;
+    //private GameClient gameClient;
     private boolean buttonsFreiGegeben;
 
     public GUI()

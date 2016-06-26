@@ -6,19 +6,12 @@
  * @version 2016-06-24
  */
 
-public class Spieler
+public class Spieler implements Zustand
 {
     private String name;
     private String ip;
     private int port;
     private int zustand;
-    private static final int NICKNAME = 0;
-    private static final int WAIT = 1;
-    private static final int PASSIVE = 2;
-    private static final int ACTIVE = 3;
-    private static final int LOST = 4;
-    private static final int WON = 5;
-    
 
     /**
      * Constructor for objects of class Client

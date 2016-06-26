@@ -14,10 +14,12 @@ public class GameClient extends Client
     /**
      * Constructor for objects of class GameClient
      */
-    public GameClient()
+    public GameClient(String pIPAdresse, int pPortNr)
     {
-        
+        super(pIPAdresse, pPortNr);
     }
 
-    
+    public void processMessage(String pMessage) {
+        
+    }
 }

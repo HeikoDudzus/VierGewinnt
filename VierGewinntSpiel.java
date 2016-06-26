@@ -1,19 +1,30 @@
 /**
- * @author Gerrit (Die Hinterbänkler)
+ * @author Gerrit(Spiellogik), Heiko (Adaption für Netzwerk) (Die Hinterbänkler)
  * @version 2016-06-12
  */
 
-public class VierGewinntSpiel
+public class VierGewinntSpiel implements Zustand
 {
     private Spielfeld spielfeld;
     private String aktiverSpieler;
+    private Spieler spieler1;
+    private Spieler spieler2;
 
     public VierGewinntSpiel()
     {
         spielfeld = new Spielfeld();
         aktiverSpieler = "X";
+        
     }
-
+    
+    public VierGewinntSpiel(Spieler pSpieler1, Spieler pSpieler2)
+    {
+        spielfeld = new Spielfeld();
+        this.spieler1 = pSpieler1;
+        this.spieler2 = pSpieler2;
+        if (spieler1.gibZustand() == PASSIVE) spieler1.setzeZustand(ACTIVE);
+    }
+    
     public boolean setzeSymbol(int pX, int pY)
     {
         if (aktiverSpieler.equals("X"))

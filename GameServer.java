@@ -5,18 +5,12 @@
  * @version 2016-04-27
  */
 
-public class GameServer extends Server
+public class GameServer extends Server implements Zustand
 {
     //private DBVierGewinnt db;
     private List<Spieler> spielerListe;
-    private XxoSpiel spiel;
-    private static final int NICKNAME = 0;
-    private static final int WAIT = 1;
-    private static final int PASSIVE = 2;
-    private static final int ACTIVE = 3;
-    private static final int LOST = 4;
-    private static final int WON = 5;
-
+    private VierGewinntSpiel spiel;
+    
     /**
      * Konstruktor fuer Objekte der Klasse GameServer
      */
@@ -28,7 +22,7 @@ public class GameServer extends Server
     }
 
     public void processNewConnection(String pClientIP, int pClientPort) {
-        send(pClientIP, pClientPort, "Herzlich Willkommen beim Chat!");
+        send(pClientIP, pClientPort, "Herzlich Willkommen auf dem Vier-Gewinnt-Gameserver!");
         send(pClientIP, pClientPort, "\"QUIT\" beendet die Verbindung!");
         System.out.println(pClientIP + " : " + pClientPort + " hat sich eingewaehlt.");
         Spieler spieler = new Spieler(pClientIP, pClientPort);
@@ -44,8 +38,8 @@ public class GameServer extends Server
             int zustand = spieler.gibZustand();
             switch (zustand) {
                 case NICKNAME : processNickname(spieler, pMessage); break;
-                case WAIT : processChat(spieler, pMessage); break;
-                case PASSIVE :
+                case WAIT : processWait(spieler, pMessage); break;
+                case PASSIVE : processPassive(spieler, pMessage); break;
                 case ACTIVE :
                 case LOST :
                 case WON :
@@ -66,23 +60,67 @@ public class GameServer extends Server
                 // Ist ein Client mit dem gew�nschten Namen noch nicht vorhanden?
                 if (!nameVorhanden(stuecke[1])){
                     pClient.setzeName(stuecke[1]);
-                    pClient.setzeZustand(2);
-                    send(clientIP, clientPort, "Ihr Name ist " + stuecke[1]);
-                    sendToAll(stuecke[1] + " hat den Chat betreten.");
+                    pClient.setzeZustand(WAIT);
+                    send(clientIP, clientPort, "+OK " + stuecke[1]);
+                    sendToAll(stuecke[1] + " logged on to the server");
                 } else {
-                    send(clientIP, clientPort, "Der Name " + stuecke[1] + " ist schon vergeben.");
+                    send(clientIP, clientPort, "-INVALID name invalid");
                 }
             }
 
         } else if (pMessage.equals("QUIT")){
-            send(clientIP, clientPort, "Auf Wiedersehen");
+            send(clientIP, clientPort, "+OK see you soon");
             closeConnection(clientIP, clientPort);
             loescheClientNachIPUndPort(clientIP, clientPort);
         } else {
-            send(clientIP, clientPort, "Unbekannter Befehl");
+            send(clientIP, clientPort, "-ERR unknown command");
         } 
     }
 
+    public void processWait(Spieler pClient, String pMessage) {
+        String clientIP = pClient.gibIP();
+        int clientPort = pClient.gibPort();
+        String[] stuecke = pMessage.split(" ");
+        if (stuecke.length == 2) {
+            if (stuecke[0].equals("PLAY")){
+                // Ist ein Client mit dem gewuenschten Namen vorhanden?
+                Spieler gegenspieler = gibSpielerNachNamen(stuecke[1]);
+                if (gegenspieler != null){
+                    // Zustände ändern
+                    pClient.setzeZustand(PASSIVE);
+                    gegenspieler.setzeZustand(PASSIVE);
+                    send(clientIP, clientPort, "+STARTED " + stuecke[1]);
+                    send(gegenspieler.gibIP(), gegenspieler.gibPort(), "+STARTED " + pClient.gibName());
+                } else {
+                    send(clientIP, clientPort, "-WAIT opponent not found");
+                }
+            }
+
+        } else if (pMessage.equals("QUIT")){
+            send(clientIP, clientPort, "+OK see you soon");
+            closeConnection(clientIP, clientPort);
+            loescheClientNachIPUndPort(clientIP, clientPort);
+        } else if (pMessage.equals("LISTPLAYERS")){
+            send(clientIP, clientPort, "List of other players: ");
+            spielerListe.toFirst();
+            while (spielerListe.hasAccess()) {
+                Spieler spieler = spielerListe.getContent();
+                send(clientIP, clientPort, spieler.gibName());
+                spielerListe.next();
+            }
+        } else {
+            send(clientIP, clientPort, "-ERR unknown command");
+        } 
+    }
+
+    public void processPassive(Spieler pClient, String pMessage) {
+        String clientIP = pClient.gibIP();
+        int clientPort = pClient.gibPort();
+        send(clientIP, clientPort, "-ERR it is not your turn");
+        // Wie erfährt der Gameserver vom assoziierten Spiel, wenn der Spieler an der Reihe ist?
+        // direkter Zugriff auf Spieler?
+    }
+    
     public void loescheClientNachIPUndPort(String pClientIP, int pClientPort){
         spielerListe.toFirst();
         while (spielerListe.hasAccess()) {
@@ -129,6 +167,18 @@ public class GameServer extends Server
             spielerListe.next();
         }
         return false;
+    }
+
+    private Spieler gibSpielerNachNamen(String pName) {
+        spielerListe.toFirst();
+        while (spielerListe.hasAccess()) {
+            Spieler spieler = spielerListe.getContent();
+            if (pName.equals(spieler.gibName())) {
+                return spieler;
+            }
+            spielerListe.next();
+        }
+        return null;
     }
 
     public void processClosedConnection(String pClientIP, int pClientPort) {
