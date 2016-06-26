@@ -1,0 +1,27 @@
+#BlueJ class context
+comment0.params=port
+comment0.target=GameServer(int)
+comment0.text=\r\n\ Konstruktor\ fuer\ Objekte\ der\ Klasse\ GameServer\r\n
+comment1.params=pClientIP\ pClientPort
+comment1.target=void\ processNewConnection(java.lang.String,\ int)
+comment10.params=pName
+comment10.target=Spieler\ gibSpielerNachNamen(java.lang.String)
+comment11.params=pClientIP\ pClientPort
+comment11.target=void\ processClosedConnection(java.lang.String,\ int)
+comment2.params=pClientIP\ pClientPort\ pMessage
+comment2.target=void\ processMessage(java.lang.String,\ int,\ java.lang.String)
+comment3.params=pClient\ pMessage
+comment3.target=void\ processNickname(Spieler,\ java.lang.String)
+comment4.params=pClient\ pMessage
+comment4.target=void\ processWait(Spieler,\ java.lang.String)
+comment5.params=pClient\ pMessage
+comment5.target=void\ processPassive(Spieler,\ java.lang.String)
+comment6.params=pClientIP\ pClientPort
+comment6.target=void\ loescheClientNachIPUndPort(java.lang.String,\ int)
+comment7.params=pClientIP\ pClientPort
+comment7.target=Spieler\ sucheClientNachIPUndPort(java.lang.String,\ int)
+comment8.params=pClient\ pMessage
+comment8.target=void\ processChat(Spieler,\ java.lang.String)
+comment9.params=pName
+comment9.target=boolean\ nameVorhanden(java.lang.String)
+numComments=12
