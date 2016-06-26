@@ -67,6 +67,7 @@ public class GUI extends JFrame implements ActionListener
 
         this.repaint();
         vierGewinntSpiel = new VierGewinntSpiel();
+        //gameClient = new Gameclient("127.0.0.1", 10000);
         buttonsFreiGegeben = true;
     }
 
