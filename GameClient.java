@@ -19,6 +19,7 @@ public class GameClient extends Client
     private JTextArea ausgabe;
     private JLabel eigenerName;
     private JLabel gegnerName;
+    private JLabel gewonnen;
     private String symbol;
     private String name;
     private String gegner;
@@ -26,15 +27,19 @@ public class GameClient extends Client
     /**
      * Constructor for objects of class GameClient
      */
-    public GameClient(String pIPAdresse, int pPortNr, JButton[][] pButtons, JTextArea pAusgabe)
+    public GameClient(String pIPAdresse, int pPortNr, JButton[][] pButtons, JTextArea pAusgabe,
+    JLabel pEigenerName, JLabel pGegnerName, JLabel pGewonnen)
     {
         super(pIPAdresse, pPortNr);
         buttons = pButtons;
         ausgabe = pAusgabe;
-        aktiv = false;
-        won = false;
-        lost = false;
-        unentschieden = false;
+        eigenerName = pEigenerName;
+        gegnerName = pGegnerName;
+        gewonnen = pGewonnen;
+        // aktiv = false;
+        //won = false;
+        //lost = false;
+        //unentschieden = false;
     }
 
     public void processMessage(String pMessage) {
@@ -44,14 +49,26 @@ public class GameClient extends Client
         } else {
             String[] stuecke = pMessage.split(" ");
             if (stuecke.length == 1) {
-                if (stuecke[0].equals("+ACTIVE")) aktiv = true;
-                if (stuecke[0].equals("+PASSIVE")) aktiv = false;
-                if (stuecke[0].equals("+WON")) won = true;
-                if (stuecke[0].equals("+LOST")) lost = true;
-                if (stuecke[0].equals("+TIED")) unentschieden = true;
+                if (stuecke[0].equals("+ACTIVE")) ;
+                if (stuecke[0].equals("+PASSIVE")) ;
+                if (stuecke[0].equals("+WON")) {
+                    gewonnen.setText("Gewonnen! Herzlichen Glückwunsch");
+                }
+                if (stuecke[0].equals("+LOST")) {
+                    gewonnen.setText("Leider verloren!");
+                }
+                if (stuecke[0].equals("+TIED")) {
+                    gewonnen.setText("Unentschieden!");
+                }
             } else if (stuecke.length == 2) {
-                if (stuecke[0].equals("+NICKIS")) name = stuecke[1];
-                if (stuecke[0].equals("+GAMEWITH")) gegner = stuecke[1];
+                if (stuecke[0].equals("+NICKIS")) {
+                    name = stuecke[1];
+                    eigenerName.setText(name);
+                }
+                if (stuecke[0].equals("+GAMEWITH")) {
+                    gegner = stuecke[1];
+                    gegnerName.setText(gegner);
+                }
                 if (stuecke[0].equals("+SYMBOL")) symbol = stuecke[1];
             } else if (stuecke.length == 4) {
                 if (stuecke[0].equals("+SET")) {
@@ -71,20 +88,20 @@ public class GameClient extends Client
     public void waehleFeld(int pI, int pJ) {
         super.send("MOVE " + pI + " " + pJ);
     }
-    
+
     public void fordereNeuesSpiel() {
         super.send("NEW");
     }
-    
+
     public void beenden() {
         super.send("QUIT");
     }
-    
-    public void setzeNamen (String pName) {
+
+    public void setzeNamen(String pName) {
         // Sonderzeichen entfernen mit regex
         super.send("NICK " + pName);
     }
-    
+
     public boolean gibAktiv() {
         return aktiv;
     }

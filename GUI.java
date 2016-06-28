@@ -14,7 +14,7 @@ public class GUI extends JFrame implements ActionListener
     private JButton neuesSpiel;
     private VierGewinntSpiel vierGewinntSpiel;
     private boolean buttonsFreiGegeben;
-    
+
     private GameClient gameClient;
     private JTextField port, ip;
     private JTextArea nachrichten;
@@ -37,16 +37,15 @@ public class GUI extends JFrame implements ActionListener
         spielerAktiv1.setBounds(160, 70, 300, 50);
         spielerAktiv1.setFont(new Font("Arial", Font.ITALIC, 13));
         add(spielerAktiv1);
-        
+
         // JTextField für IP und Port hier erzeugen
-        
+
         // Anzeige von Nachrichten des Gameservers
         nachrichten = new JTextArea();
         JScrollPane laufleiste = new JScrollPane(nachrichten);
         laufleiste.setBounds(200, 20, 680, 300);
         nachrichten.setEditable(false);
         add(laufleiste);
-
 
         buttons = new JButton[7][7];
         //Label für die Anzeige eines Gewinns.
@@ -71,7 +70,8 @@ public class GUI extends JFrame implements ActionListener
             {
                 buttons[a][b] = new JButton("");
                 buttons[a][b].setBounds(i, y, 80, 80);
-                buttons[a][b].addActionListener(this);
+                //buttons[a][b].addActionListener(this);
+                buttons[a][b].addMouseListener(new MeinMouseAdapter(a,b));
                 add(buttons[a][b]); 
                 a++;
             } 
@@ -80,8 +80,12 @@ public class GUI extends JFrame implements ActionListener
 
         this.repaint();
         vierGewinntSpiel = new VierGewinntSpiel();
-        gameClient = new GameClient("127.0.0.1", 10000, buttons, nachrichten);
+        verbinde("127.0.0.1", 10000);
         buttonsFreiGegeben = true;
+    }
+
+    private void verbinde(String pIP, int pPort) {
+        gameClient = new GameClient(pIP, pPort, buttons, nachrichten, spielerAktiv1, spielerAktiv2, gewonnen);
     }
 
     private void leereButtonBeschriftung()
@@ -101,49 +105,63 @@ public class GUI extends JFrame implements ActionListener
         if(k.getSource()==neuesSpiel && buttonsFreiGegeben==false)
         {
             vierGewinntSpiel.setzeNeuesSpiel();
+            // gameClient.fordereNeuesSpiel();
             leereButtonBeschriftung();
             gewonnen.setText("");
             buttonsFreiGegeben = true;
         }
 
-        if(buttonsFreiGegeben == true)
-        {
-            for(int i=0; i<7; i++)
-            {
-                for(int j=0; j<7; j++)
-                {
-                    if(k.getSource()==buttons[i][j])
-                    {
-                        //Weil der aktive Spieler bei der Methode setzeSymbol(...) ggf. direkt den aktiven Spieler aendert, muss dieser zuvor in aktiverSpielerZuDiesemZeitpunkt gespeichert werden.
-                        String aktiverSpielerZuDiesemZeitpunkt = vierGewinntSpiel.gibAktivenSpieler();
-                        if(vierGewinntSpiel.setzeSymbol(i, j))
-                        {
-                            buttons[i][j].setText(aktiverSpielerZuDiesemZeitpunkt);
-                            spielerAktiv1.setText("Der folgende Spieler ist an der Reihe: " + vierGewinntSpiel.gibAktivenSpieler());
-                        }
-                        //i und j werden hochgesetzt, damit die for-Schleife ggf. nicht weiterläuft.
-                        i=7;
-                        j=7;
-                    }
-                }
-            }
+        //         if(buttonsFreiGegeben == true)
+        //         {
+        //             for(int i=0; i<7; i++)
+        //             {
+        //                 for(int j=0; j<7; j++)
+        //                 {
+        //                     if(k.getSource()==buttons[i][j])
+        //                     {
+        //                         //Weil der aktive Spieler bei der Methode setzeSymbol(...) ggf. direkt den aktiven Spieler aendert, muss dieser zuvor in aktiverSpielerZuDiesemZeitpunkt gespeichert werden.
+        //                         String aktiverSpielerZuDiesemZeitpunkt = vierGewinntSpiel.gibAktivenSpieler();
+        //                         if(vierGewinntSpiel.setzeSymbol(i, j))
+        //                         {
+        //                             buttons[i][j].setText(aktiverSpielerZuDiesemZeitpunkt);
+        //                             spielerAktiv1.setText("Der folgende Spieler ist an der Reihe: " + vierGewinntSpiel.gibAktivenSpieler());
+        //                         }
+        //                         //i und j werden hochgesetzt, damit die for-Schleife ggf. nicht weiterläuft.
+        //                         i=7;
+        //                         j=7;
+        //                     }
+        //                 }
+        //             }
+        // 
+        //             if(vierGewinntSpiel.spielerGewonnen("X"))
+        //             {
+        //                 gewonnen.setText("SPIELER X HAT GEWONNEN! HERZLICHEN GLÜCKWÜNSCH!!!");
+        //                 buttonsFreiGegeben = false;
+        //             }
+        //             else if(vierGewinntSpiel.spielerGewonnen("O"))
+        //             {
+        //                 gewonnen.setText("SPIELER O HAT GEWONNEN! HERZLICHEN GLÜCKWÜNSCH!!!");
+        //                 buttonsFreiGegeben = false;
+        //             }
+        //             else if(vierGewinntSpiel.gibAlleFelderVoll())
+        //             {
+        //                 gewonnen.setText("UNENTSCHIEDEN!");
+        //                 buttonsFreiGegeben = false;
+        //             }
+        //         }
+    }
 
-            if(vierGewinntSpiel.spielerGewonnen("X"))
-            {
-                gewonnen.setText("SPIELER X HAT GEWONNEN! HERZLICHEN GLÜCKWÜNSCH!!!");
-                buttonsFreiGegeben = false;
-            }
-            else if(vierGewinntSpiel.spielerGewonnen("O"))
-            {
-                gewonnen.setText("SPIELER O HAT GEWONNEN! HERZLICHEN GLÜCKWÜNSCH!!!");
-                buttonsFreiGegeben = false;
-            }
-            else if(vierGewinntSpiel.gibAlleFelderVoll())
-            {
-                gewonnen.setText("UNENTSCHIEDEN!");
-                buttonsFreiGegeben = false;
+    private class MeinMouseAdapter extends MouseAdapter {
+        int x,y;
+        public MeinMouseAdapter(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+
+        public void mouseClicked(MouseEvent me) {
+            if (me.getButton() == MouseEvent.BUTTON1) {
+                gameClient.waehleFeld(x,y);
             }
         }
     }
 }
-

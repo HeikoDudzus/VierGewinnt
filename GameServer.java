@@ -135,6 +135,11 @@ public class GameServer extends Server implements Zustand
                             send(gegenspieler.gibIP(), gegenspieler.gibPort(), "+LOST");
                             pClient.setzeZustand(OVER);
                             gegenspieler.setzeZustand(OVER);
+                        } else if (s.gibAlleFelderVoll()) {
+                            send(clientIP, clientPort, "+TIED");
+                            send(gegenspieler.gibIP(), gegenspieler.gibPort(), "+TIED");
+                            pClient.setzeZustand(OVER);
+                            gegenspieler.setzeZustand(OVER);
                         }
                     } else {
                         send(clientIP, clientPort, "move not possible");
@@ -228,6 +233,10 @@ public class GameServer extends Server implements Zustand
             spiele.append(s);
             spieler1.setzeZustand(ACTIVE);
             spieler2.setzeZustand(PASSIVE);
+            send(spieler1.gibIP(), spieler1.gibPort(), "+GAMEWITH "+spieler2.gibName());
+            send(spieler1.gibIP(), spieler1.gibPort(), "+GAMEWITH "+spieler1.gibSymbol());
+            send(spieler2.gibIP(), spieler2.gibPort(), "+SYMBOL "+spieler1.gibName());
+            send(spieler2.gibIP(), spieler2.gibPort(), "+SYMBOL "+spieler2.gibSymbol());
             send(spieler1.gibIP(), spieler1.gibPort(), "+ACTIVE");
             send(spieler2.gibIP(), spieler2.gibPort(), "+PASSIVE");
             System.out.println("Spiel gestartet mit "+spieler1.gibName()+" und "+spieler2.gibName());
