@@ -12,6 +12,7 @@ public class Spieler implements Zustand
     private String ip;
     private int port;
     private int zustand;
+    private String symbol;
 
     /**
      * Constructor for objects of class Client
@@ -44,7 +45,15 @@ public class Spieler implements Zustand
     public int gibZustand(){
         return zustand;
     }
-
+    
+    public String gibSymbol() {
+        return symbol;
+    }
+    
+    public void setzeSymbol(String pSymbol) {
+        symbol = pSymbol;
+    }
+    
     public void setzeName(String pName){
         this.name = pName;
     }

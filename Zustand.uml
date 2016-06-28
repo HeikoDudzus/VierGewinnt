@@ -1,0 +1,221 @@
+[Files]
+File0=Client.java
+File1=Connection.java
+File2=GameClient.java
+File3=GameServer.java
+File4=GUI.java
+File5=List.java
+File6=Queue.java
+File7=Server.java
+File8=Spieler.java
+File9=Spielfeld.java
+File10=VierGewinntSpiel.java
+File11=Zustand.java
+
+[Box:  - Client]
+X=438
+Y=40
+MinVis=0
+ShowParameter=4
+SortOrder=0
+ShowIcons=0
+FontSize=10
+FontName=MS Sans Serif
+
+[Box:  - Client$Clientempfaenger]
+X=20
+Y=377
+MinVis=0
+ShowParameter=4
+SortOrder=0
+ShowIcons=0
+FontSize=10
+FontName=MS Sans Serif
+
+[Box:  - Connection]
+X=403
+Y=730
+MinVis=0
+ShowParameter=4
+SortOrder=0
+ShowIcons=0
+FontSize=10
+FontName=MS Sans Serif
+
+[Box:  - GameClient]
+X=920
+Y=377
+MinVis=0
+ShowParameter=4
+SortOrder=0
+ShowIcons=0
+FontSize=10
+FontName=MS Sans Serif
+
+[Box:  - GameServer]
+X=1704
+Y=377
+MinVis=0
+ShowParameter=4
+SortOrder=0
+ShowIcons=0
+FontSize=10
+FontName=MS Sans Serif
+
+[Box:  - GUI]
+X=1954
+Y=40
+MinVis=0
+ShowParameter=4
+SortOrder=0
+ShowIcons=0
+FontSize=10
+FontName=MS Sans Serif
+
+[Box:  - List<ContentType>]
+X=707
+Y=40
+MinVis=0
+ShowParameter=4
+SortOrder=0
+ShowIcons=0
+FontSize=10
+FontName=MS Sans Serif
+
+[Box:  - List<ContentType>$ListNode]
+X=631
+Y=377
+MinVis=0
+ShowParameter=4
+SortOrder=0
+ShowIcons=0
+FontSize=10
+FontName=MS Sans Serif
+
+[Box:  - Queue<ContentType>]
+X=2625
+Y=40
+MinVis=0
+ShowParameter=4
+SortOrder=0
+ShowIcons=0
+FontSize=10
+FontName=MS Sans Serif
+
+[Box:  - Queue<ContentType>$QueueNode]
+X=2608
+Y=377
+MinVis=0
+ShowParameter=4
+SortOrder=0
+ShowIcons=0
+FontSize=10
+FontName=MS Sans Serif
+
+[Box:  - Server]
+X=1415
+Y=40
+MinVis=0
+ShowParameter=4
+SortOrder=0
+ShowIcons=0
+FontSize=10
+FontName=MS Sans Serif
+
+[Box:  - Server$ServerConnection]
+X=715
+Y=1147
+MinVis=0
+ShowParameter=4
+SortOrder=0
+ShowIcons=0
+FontSize=10
+FontName=MS Sans Serif
+
+[Box:  - Server$ServerSchleife]
+X=2155
+Y=377
+MinVis=0
+ShowParameter=4
+SortOrder=0
+ShowIcons=0
+FontSize=10
+FontName=MS Sans Serif
+
+[Box:  - Spieler]
+X=1133
+Y=1147
+MinVis=0
+ShowParameter=4
+SortOrder=0
+ShowIcons=0
+FontSize=10
+FontName=MS Sans Serif
+
+[Box:  - Spielfeld]
+X=1703
+Y=1147
+MinVis=0
+ShowParameter=4
+SortOrder=0
+ShowIcons=0
+FontSize=10
+FontName=MS Sans Serif
+
+[Box:  - VierGewinntSpiel]
+X=1833
+Y=730
+MinVis=0
+ShowParameter=4
+SortOrder=0
+ShowIcons=0
+FontSize=10
+FontName=MS Sans Serif
+
+[Box:  - Zustand]
+X=1586
+Y=1500
+MinVis=0
+ShowParameter=4
+SortOrder=0
+ShowIcons=0
+FontSize=10
+FontName=MS Sans Serif
+
+[Diagram]
+comments=0
+OffsetX=1135
+OffsetY=0
+Visibility=0
+ShowParameter=4
+SortOrder=0
+ShowIcons=0
+ShowConnections=0
+Fontname=MS Sans Serif
+Fontsize=10
+ShowObjectDiagram=0
+
+[Connections]
+V0=Client#Connection#AssociationDirected####0#0#0
+V1=Client#Client$Clientempfaenger#AssociationBidirectional####0#0#0
+V2=Client$Clientempfaenger#Connection#AssociationDirected####0#0#0
+V3=GameClient#Client#Inheritends####0#0#0
+V4=GameServer#Server#Inheritends####0#0#0
+V5=GameServer#Zustand#Implements####0#0#0
+V6=GameServer#Spieler#Aggregation####0#0#0
+V7=GameServer#VierGewinntSpiel#Aggregation####0#0#0
+V8=GUI#VierGewinntSpiel#AssociationDirected####0#0#0
+V9=GUI#GameClient#AssociationDirected####0#0#0
+V10=List<ContentType>#List<ContentType>$ListNode#AssociationDirected####0#0#0
+V11=Queue<ContentType>#Queue<ContentType>$QueueNode#AssociationDirected####0#0#0
+V12=Server$ServerConnection#Connection#Inheritends####0#0#0
+V13=Server#Server$ServerConnection#AssociationBidirectional####0#0#0
+V14=Server#Server$ServerSchleife#AssociationBidirectional####0#0#0
+V15=Spieler#Zustand#Implements####0#0#0
+V16=VierGewinntSpiel#Zustand#Implements####0#0#0
+V17=VierGewinntSpiel#Spielfeld#AssociationDirected####0#0#0
+V18=VierGewinntSpiel#Spieler#AssociationDirected####0#0#0
+
+[Interactive]
+I0=
+

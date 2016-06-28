@@ -13,8 +13,11 @@ public class GUI extends JFrame implements ActionListener
     private JButton[][] buttons;
     private JButton neuesSpiel;
     private VierGewinntSpiel vierGewinntSpiel;
-    //private GameClient gameClient;
     private boolean buttonsFreiGegeben;
+    
+    private GameClient gameClient;
+    private JTextField port, ip;
+    private JTextArea nachrichten;
 
     public GUI()
     {
@@ -34,6 +37,16 @@ public class GUI extends JFrame implements ActionListener
         spielerAktiv1.setBounds(160, 70, 300, 50);
         spielerAktiv1.setFont(new Font("Arial", Font.ITALIC, 13));
         add(spielerAktiv1);
+        
+        // JTextField für IP und Port hier erzeugen
+        
+        // Anzeige von Nachrichten des Gameservers
+        nachrichten = new JTextArea();
+        JScrollPane laufleiste = new JScrollPane(nachrichten);
+        laufleiste.setBounds(200, 20, 680, 300);
+        nachrichten.setEditable(false);
+        add(laufleiste);
+
 
         buttons = new JButton[7][7];
         //Label für die Anzeige eines Gewinns.
@@ -67,7 +80,7 @@ public class GUI extends JFrame implements ActionListener
 
         this.repaint();
         vierGewinntSpiel = new VierGewinntSpiel();
-        //gameClient = new Gameclient("127.0.0.1", 10000);
+        gameClient = new GameClient("127.0.0.1", 10000, buttons, nachrichten);
         buttonsFreiGegeben = true;
     }
 
