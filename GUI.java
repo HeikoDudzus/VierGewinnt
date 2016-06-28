@@ -1,3 +1,8 @@
+/**
+ * @author Gerrit (Die Hinterbänkler)
+ * @version 2016-06-12
+ */
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -8,6 +13,7 @@ public class GUI extends JFrame implements ActionListener
     private JButton[][] buttons;
     private JButton neuesSpiel;
     private VierGewinntSpiel vierGewinntSpiel;
+    //private GameClient gameClient;
     private boolean buttonsFreiGegeben;
 
     public GUI()
