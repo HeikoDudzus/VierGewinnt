@@ -12,9 +12,9 @@ public class GUI extends JFrame implements ActionListener
     private JLabel ueberschrift, spielerAktiv1, spielerAktiv2, gewonnen, labelRed;
     private JLabel aktiv;
     private SpielButton[][] buttons;
-    private JButton neuesSpiel;
+    private JButton neuesSpiel, beendeSpiel;
     private VierGewinntSpiel vierGewinntSpiel;
-    private boolean buttonsFreiGegeben;
+    
 
     private GameClient gameClient;
     private JTextField port, ip;
@@ -47,8 +47,6 @@ public class GUI extends JFrame implements ActionListener
         spielerAktiv1.setFont(new Font("Arial", Font.ITALIC, 13));
         add(spielerAktiv1);
 
-        // JTextField für IP und Port hier erzeugen
-
         // Anzeige von Nachrichten des Gameservers
         nachrichten = new JTextArea();
         JScrollPane laufleiste = new JScrollPane(nachrichten);
@@ -70,11 +68,15 @@ public class GUI extends JFrame implements ActionListener
         gewonnen.setForeground(Color.RED);
         add(gewonnen);
 
-        //Button für ein neues Spiel.
+        //Buttons für ein neues Spiel und Spiel beenden.
         neuesSpiel = new JButton("Neues Spiel");
-        neuesSpiel.setBounds(680, 60, 150, 50);
+        neuesSpiel.setBounds(560, 30, 150, 40);
         neuesSpiel.addActionListener(this);
         add(neuesSpiel);
+        beendeSpiel = new JButton("Beende Spiel");
+        beendeSpiel.setBounds(560, 80, 150, 40);
+        beendeSpiel.addActionListener(this);
+        add(beendeSpiel);
 
         //Erstellung der Buttons fuer die 49 Felder.
         int a=0;
@@ -94,6 +96,7 @@ public class GUI extends JFrame implements ActionListener
             b++;
         }
 
+        //Eingabemenue fuer Nick, IP und Port
         nickname = new JLabel("2. Nickname:");
         nickname.setBounds(100, 810, 80, 30);
         add(nickname);
@@ -123,7 +126,6 @@ public class GUI extends JFrame implements ActionListener
 
         this.repaint();
         vierGewinntSpiel = new VierGewinntSpiel();
-        buttonsFreiGegeben = true;
     }
 
     private void verbinde(String pIP, int pPort) {
@@ -145,23 +147,23 @@ public class GUI extends JFrame implements ActionListener
 
     public void actionPerformed(ActionEvent k)
     {
-        if(k.getSource()==neuesSpiel && buttonsFreiGegeben==false)
-        {
-            vierGewinntSpiel.setzeNeuesSpiel();
-            // gameClient.fordereNeuesSpiel();
-            leereButtonBeschriftung();
-            gewonnen.setText("");
-            buttonsFreiGegeben = true;
-        }
-
         if(k.getSource() == nicknameButton)
         {
             gameClient.setzeNamen("" + nicknameEingabefenster.getText());
         }
-        else if(k.getSource()== ipPortConnect)
+        else if(k.getSource() == ipPortConnect)
         {
             verbinde("" + ipEingabefenster.getText(), Integer.parseInt(portEingabefenster.getText()));
         }
+        else if(k.getSource() == beendeSpiel)
+        {
+            gameClient.beenden();
+        }
+        else if(k.getSource() == neuesSpiel)
+        {
+            gameClient.fordereNeuesSpiel();
+        }
+        
 
         //         if(buttonsFreiGegeben == true)
         //         {

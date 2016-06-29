@@ -52,6 +52,9 @@ public class GameClient extends Client
         } else {
             String[] stuecke = pMessage.split(" ");
             if (stuecke.length == 1) {
+                if (stuecke[0].equals("+WAIT")) {
+                    leereButtonBeschriftung();
+                }
                 if (stuecke[0].equals("+ACTIVE")) {
                     bAktiv.setBackground(Color.GREEN);
                 }
@@ -109,7 +112,20 @@ public class GameClient extends Client
     public void beenden() {
         super.send("QUIT");
     }
-
+    
+    private void leereButtonBeschriftung()
+    {
+        for(int i=0; i<7; i++)
+        {
+            for(int j=0; j<7; j++)
+            {
+                buttons[i][j].setText("");
+                buttons[i][j].setGameColor(java.awt.Color.BLACK);
+            }
+        }
+        //repaint();
+    }
+    
     public void setzeNamen(String pName) {
         // Sonderzeichen entfernen mit regex
         super.send("NICK " + pName);

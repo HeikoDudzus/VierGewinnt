@@ -13,7 +13,6 @@ public class Spieler implements Zustand
     private int port;
     private int zustand;
     private String symbol;
-    private VierGewinntSpiel spiel;
 
     /**
      * Constructor for objects of class Client
@@ -28,16 +27,8 @@ public class Spieler implements Zustand
         this.ip = pIP;
         this.port = pPort;
         zustand = NICKNAME;
-        spiel = null;
     }
     
-    public void setzeSpiel(VierGewinntSpiel pSpiel) {
-        spiel = pSpiel;
-    }
-    
-    public VierGewinntSpiel gibSpiel() {
-        return spiel;
-    }
     
     public String gibName()
     {

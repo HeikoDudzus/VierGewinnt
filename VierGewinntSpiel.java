@@ -26,6 +26,26 @@ public class VierGewinntSpiel implements Zustand
         // if (spieler1.gibZustand() == PASSIVE) spieler1.setzeZustand(ACTIVE);
     }
     
+    public void loescheSpielerNachNamen(String pName) {
+        if (spieler1 != null || spieler1.gibName().equals(pName)) {
+            spieler1 = null;
+        } else if (spieler2 != null || spieler2.gibName().equals(pName)) {
+            spieler2 = null;
+        }
+    }
+    
+    public boolean beideSpielerWeg() {
+        return (spieler1 == null && spieler2 == null);
+    }
+    
+    public void setzeSpieler1(Spieler pSpieler) {
+        spieler1 = pSpieler;
+    }
+    
+    public void setzeSpieler2(Spieler pSpieler) {
+        spieler2 = pSpieler;
+    }
+    
     public boolean setzeSymbol(int pX, int pY)
     {
         // if (gibAktivenSpieler2().gibSymbol().equals("X")

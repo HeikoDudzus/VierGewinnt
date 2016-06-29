@@ -120,7 +120,6 @@ public class GameServer extends Server implements Zustand
                 // Exception abfangen
                 // zugehöriges Spiel suchen
                 VierGewinntSpiel s = gibSpielNachSpieler(pClient);
-                //VierGewinntSpiel s = pClient.gibSpiel();
                 Spieler gegenspieler = s.gibPassivenSpieler();
                 if (s != null) {
                     boolean status = s.setzeSymbol(i,j);
@@ -163,12 +162,35 @@ public class GameServer extends Server implements Zustand
 
     private void processOver(Spieler pClient, String pMessage) {
         if (pMessage.equals("NEW")) {
+            String clientIP = pClient.gibIP();
+            int clientPort = pClient.gibPort();
+            send(clientIP, clientPort, "Waiting for a new game");
+            send(clientIP, clientPort, "+WAIT");
+            VierGewinntSpiel s = gibSpielNachSpieler(pClient);
+            s.loescheSpielerNachNamen(pClient.gibName());
+            if (s.beideSpielerWeg()) loescheSpielAusListe(s);
+            pClient.setzeZustand(WAIT);
+            warteschlange.enqueue(pClient);
+            starteSpielWennMoeglich();
+        } 
+        else if(pMessage.equals("QUIT"))
+        {
+            String clientIP = pClient.gibIP();
+            int clientPort = pClient.gibPort();
+            send(clientIP, clientPort, "+OK see you soon");
+            closeConnection(clientIP, clientPort);
+            loescheClientNachIPUndPort(clientIP, clientPort);
             beendeSpiel();
-        } else {
+        }
+        else {
             send(pClient.gibIP(), pClient.gibPort(), "-ERR unknown command");
         }
     }
-
+    
+    private void loescheSpielAusListe(VierGewinntSpiel pSpiel) {
+        
+    }
+    
     private void loescheClientNachIPUndPort(String pClientIP, int pClientPort){
         spielerListe.toFirst();
         while (spielerListe.hasAccess()) {
@@ -232,8 +254,6 @@ public class GameServer extends Server implements Zustand
             spieler2.setzeSymbol("O");
             VierGewinntSpiel s = new VierGewinntSpiel(spieler1, spieler2);
             spiele.append(s);
-            spieler1.setzeSpiel(s);
-            spieler2.setzeSpiel(s);
             spieler1.setzeZustand(ACTIVE);
             spieler2.setzeZustand(PASSIVE);
             send(spieler1.gibIP(), spieler1.gibPort(), "+GAMEWITH "+spieler2.gibName());
@@ -262,7 +282,8 @@ public class GameServer extends Server implements Zustand
         return true;
     }
 
-    private void beendeSpiel() {
+    private void beendeSpiel() 
+    {
 
     }
 
