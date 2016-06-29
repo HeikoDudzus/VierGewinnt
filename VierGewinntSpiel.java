@@ -200,7 +200,7 @@ public class VierGewinntSpiel implements Zustand
             }
         }
 
-        return (anzahlDerMarkierungen>3);
+        return vierVorhanden;
     }
 
     public boolean vierInEinerDiagonalen(String pSpieler)
