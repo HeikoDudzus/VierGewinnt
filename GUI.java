@@ -10,7 +10,8 @@ import java.awt.event.*;
 public class GUI extends JFrame implements ActionListener
 {
     private JLabel ueberschrift, spielerAktiv1, spielerAktiv2, gewonnen, labelRed;
-    private JButton[][] buttons;
+    private JLabel aktiv;
+    private SpielButton[][] buttons;
     private JButton neuesSpiel;
     private VierGewinntSpiel vierGewinntSpiel;
     private boolean buttonsFreiGegeben;
@@ -25,7 +26,7 @@ public class GUI extends JFrame implements ActionListener
         setLayout(null);
         setVisible(true);
         setResizable(false);
-        setSize(850, 850);
+        setSize(860, 860);
         setBackground(Color.BLUE);
 
         //Erstellung der festen Texte (Labels).
@@ -46,8 +47,15 @@ public class GUI extends JFrame implements ActionListener
         laufleiste.setBounds(200, 20, 680, 300);
         nachrichten.setEditable(false);
         add(laufleiste);
+        
+        // Label, das anzeigt, ob der Spieler aktiv ist
+        aktiv = new JLabel("");
+        aktiv.setBounds(20,20,50,50);
+        aktiv.setOpaque(true);
+        aktiv.setBackground(Color.BLUE);
+        add(aktiv);
 
-        buttons = new JButton[7][7];
+        buttons = new SpielButton[7][7];
         //Label für die Anzeige eines Gewinns.
         gewonnen = new JLabel("");
         gewonnen.setBounds(160, 120, 400, 50);
@@ -56,19 +64,19 @@ public class GUI extends JFrame implements ActionListener
 
         //Button für ein neues Spiel.
         neuesSpiel = new JButton("Neues Spiel");
-        neuesSpiel.setBounds(680, 710, 150, 50);
+        neuesSpiel.setBounds(680, 60, 150, 50);
         neuesSpiel.addActionListener(this);
         add(neuesSpiel);
 
         //Erstellung der Buttons fuer die 49 Felder.
         int a=0;
         int b=0;
-        for (int y=200; y<=680; y=y+80)
+        for (int y=150; y<=630; y=y+80)
         {
             a=0;
-            for (int i=100; i<=580; i=i+80)
+            for (int i=150; i<=630; i=i+80)
             {
-                buttons[a][b] = new JButton("");
+                buttons[a][b] = new SpielButton();
                 buttons[a][b].setBounds(i, y, 80, 80);
                 //buttons[a][b].addActionListener(this);
                 buttons[a][b].addMouseListener(new MeinMouseAdapter(a,b));
@@ -85,7 +93,7 @@ public class GUI extends JFrame implements ActionListener
     }
 
     private void verbinde(String pIP, int pPort) {
-        gameClient = new GameClient(pIP, pPort, buttons, nachrichten, spielerAktiv1, spielerAktiv2, gewonnen);
+        gameClient = new GameClient(pIP, pPort, buttons, nachrichten, spielerAktiv1, spielerAktiv2, gewonnen, aktiv);
     }
 
     private void leereButtonBeschriftung()
@@ -95,6 +103,7 @@ public class GUI extends JFrame implements ActionListener
             for(int j=0; j<7; j++)
             {
                 buttons[i][j].setText("");
+                buttons[i][j].setGameColor(java.awt.Color.BLACK);
             }
         }
         repaint();

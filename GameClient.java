@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.*;
 import java.util.regex.*;
 
 /**
@@ -11,15 +12,16 @@ import java.util.regex.*;
 public class GameClient extends Client
 {
     // Server gibt regelmäßig Meldungen über den Zustand des eigenen Spielers
-    private boolean aktiv;
+    //private boolean aktiv;
     private boolean won;
     private boolean lost;
     private boolean unentschieden;
-    private JButton[][] buttons;
+    private SpielButton[][] buttons;
     private JTextArea ausgabe;
     private JLabel eigenerName;
     private JLabel gegnerName;
     private JLabel gewonnen;
+    private JLabel bAktiv;
     private String symbol;
     private String name;
     private String gegner;
@@ -27,8 +29,8 @@ public class GameClient extends Client
     /**
      * Constructor for objects of class GameClient
      */
-    public GameClient(String pIPAdresse, int pPortNr, JButton[][] pButtons, JTextArea pAusgabe,
-    JLabel pEigenerName, JLabel pGegnerName, JLabel pGewonnen)
+    public GameClient(String pIPAdresse, int pPortNr, SpielButton[][] pButtons, JTextArea pAusgabe,
+    JLabel pEigenerName, JLabel pGegnerName, JLabel pGewonnen, JLabel pAktiv)
     {
         super(pIPAdresse, pPortNr);
         buttons = pButtons;
@@ -36,6 +38,7 @@ public class GameClient extends Client
         eigenerName = pEigenerName;
         gegnerName = pGegnerName;
         gewonnen = pGewonnen;
+        bAktiv = pAktiv;
         // aktiv = false;
         //won = false;
         //lost = false;
@@ -49,8 +52,12 @@ public class GameClient extends Client
         } else {
             String[] stuecke = pMessage.split(" ");
             if (stuecke.length == 1) {
-                if (stuecke[0].equals("+ACTIVE")) ;
-                if (stuecke[0].equals("+PASSIVE")) ;
+                if (stuecke[0].equals("+ACTIVE")) {
+                    bAktiv.setBackground(Color.GREEN);
+                }
+                if (stuecke[0].equals("+PASSIVE")) {
+                    bAktiv.setBackground(Color.RED);
+                }
                 if (stuecke[0].equals("+WON")) {
                     gewonnen.setText("Gewonnen! Herzlichen Glückwunsch");
                 }
@@ -76,7 +83,13 @@ public class GameClient extends Client
                     String s = stuecke[1]; // Symbol
                     int i = Integer.parseInt(stuecke[2]);
                     int j = Integer.parseInt(stuecke[3]);
-                    buttons[i][j].setText(s);
+                    if (s.equals("X")) {
+                        buttons[i][j].setText(s);
+                        buttons[i][j].setGameColor(Color.RED);
+                    } else if (s.equals("O")) {
+                        buttons[i][j].setText(s);
+                        buttons[i][j].setGameColor(Color.ORANGE);
+                    }
                     //aktiv = !aktiv; // Jetzt wechselt der aktive Spieler
                 }
             }
@@ -102,7 +115,13 @@ public class GameClient extends Client
         super.send("NICK " + pName);
     }
 
-    public boolean gibAktiv() {
-        return aktiv;
-    }
+    //     public void paint(java.awt.Graphics g){
+    //         paint(g);
+    //          g.setColor(gameColor);
+    //          g.fillOval(0, 0,this.getWidth(),this.getHeight());
+    //        
+    //     }
+    //public boolean gibAktiv() {
+    //    return aktiv;
+    //}
 }
