@@ -10,7 +10,7 @@ public class GameServer extends Server implements Zustand
     //private DBVierGewinnt db;
     private List<Spieler> spielerListe;
     private Queue<Spieler> warteschlange;
-    private List<VierGewinntSpiel> spiele;
+    private static List<VierGewinntSpiel> spiele;
 
     /**
      * Konstruktor fuer Objekte der Klasse GameServer
@@ -120,6 +120,7 @@ public class GameServer extends Server implements Zustand
                 // Exception abfangen
                 // zugehöriges Spiel suchen
                 VierGewinntSpiel s = gibSpielNachSpieler(pClient);
+                //VierGewinntSpiel s = pClient.gibSpiel();
                 Spieler gegenspieler = s.gibPassivenSpieler();
                 if (s != null) {
                     boolean status = s.setzeSymbol(i,j);
@@ -231,6 +232,8 @@ public class GameServer extends Server implements Zustand
             spieler2.setzeSymbol("O");
             VierGewinntSpiel s = new VierGewinntSpiel(spieler1, spieler2);
             spiele.append(s);
+            spieler1.setzeSpiel(s);
+            spieler2.setzeSpiel(s);
             spieler1.setzeZustand(ACTIVE);
             spieler2.setzeZustand(PASSIVE);
             send(spieler1.gibIP(), spieler1.gibPort(), "+GAMEWITH "+spieler2.gibName());
@@ -250,6 +253,7 @@ public class GameServer extends Server implements Zustand
             if (spiel.gibSpieler1() == pSpieler || spiel.gibSpieler2() == pSpieler) {
                 return spiel;
             }
+            spiele.next();
         }
         return null;
     }

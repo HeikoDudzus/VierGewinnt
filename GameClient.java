@@ -74,7 +74,7 @@ public class GameClient extends Client
                 }
                 if (stuecke[0].equals("+GAMEWITH")) {
                     gegner = stuecke[1];
-                    gegnerName.setText(gegner);
+                    //gegnerName.setText(gegner);
                 }
                 if (stuecke[0].equals("+SYMBOL")) symbol = stuecke[1];
             } else if (stuecke.length == 4) {
