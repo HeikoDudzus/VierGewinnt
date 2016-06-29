@@ -7,6 +7,7 @@ public class VierGewinntSpiel implements Zustand
 {
     private Spielfeld spielfeld;
     private String aktiverSpieler;
+    private List<Spieler> spieler;
     private Spieler spieler1;
     private Spieler spieler2;
 
@@ -14,38 +15,48 @@ public class VierGewinntSpiel implements Zustand
     {
         spielfeld = new Spielfeld();
         aktiverSpieler = "X";
-        
+
     }
-    
+
     public VierGewinntSpiel(Spieler pSpieler1, Spieler pSpieler2)
     {
         spielfeld = new Spielfeld();
-        this.spieler1 = pSpieler1;
-        this.spieler2 = pSpieler2;
+        spieler = new List<Spieler>();
+        spieler.append(pSpieler1);
+        spieler.append(pSpieler2);
         aktiverSpieler = "X";
         // if (spieler1.gibZustand() == PASSIVE) spieler1.setzeZustand(ACTIVE);
     }
-    
+
     public void loescheSpielerNachNamen(String pName) {
-        if (spieler1 != null || spieler1.gibName().equals(pName)) {
-            spieler1 = null;
-        } else if (spieler2 != null || spieler2.gibName().equals(pName)) {
-            spieler2 = null;
+        spieler.toFirst();
+        while (spieler.hasAccess()) {
+            if (pName.equals(spieler.getContent().gibName())) spieler.remove();
+            spieler.next();
         }
     }
     
+    public boolean pruefeSpieler(Spieler pSpieler) {
+        spieler.toFirst();
+        while (spieler.hasAccess()) {
+            if (pSpieler == spieler.getContent()) return true;
+            spieler.next();
+        }
+        return false;
+    }
+
     public boolean beideSpielerWeg() {
-        return (spieler1 == null && spieler2 == null);
+        return spieler.isEmpty();
     }
-    
-    public void setzeSpieler1(Spieler pSpieler) {
-        spieler1 = pSpieler;
-    }
-    
-    public void setzeSpieler2(Spieler pSpieler) {
-        spieler2 = pSpieler;
-    }
-    
+
+    //     public void setzeSpieler1(Spieler pSpieler) {
+    //         spieler1 = pSpieler;
+    //     }
+    //     
+    //     public void setzeSpieler2(Spieler pSpieler) {
+    //         spieler2 = pSpieler;
+    //     }
+
     public boolean setzeSymbol(int pX, int pY)
     {
         // if (gibAktivenSpieler2().gibSymbol().equals("X")
@@ -93,36 +104,39 @@ public class VierGewinntSpiel implements Zustand
     {
         return aktiverSpieler;
     }
-    
+
     public void setzeAktivenSpieler(Spieler pSpieler) {
-        
+
     }
-    
+
     public Spieler gibAktivenSpieler2() {
         Spieler out = null;
         if (spieler1.gibZustand() == ACTIVE) out = spieler1;
         if (spieler2.gibZustand() == ACTIVE) out = spieler2;
         return out;
     }
-   
+
     public Spieler gibPassivenSpieler() {
-        Spieler out = null;
-        if (spieler1.gibZustand() == PASSIVE) out = spieler1;
-        if (spieler2.gibZustand() == PASSIVE) out = spieler2;
-        return out;
+        spieler.toFirst();
+        while (spieler.hasAccess()) {
+            Spieler sp = spieler.getContent();
+            if (sp.gibZustand() == PASSIVE) return sp;
+            spieler.next();
+        }
+        return null;
     }
-    
+
     public void setzeNeuesSpiel()
     {
         spielfeld.setzeNeuesSpielfeld();
         aktiverSpieler = "X";
     }
-    
+
     public boolean gibAlleFelderVoll()
     {
         return spielfeld.gibIstSpielfeldVoll();
     }
-    
+
     public boolean spielerGewonnen(String pSpieler)
     {
         boolean hatErGewonnen = false;
@@ -141,7 +155,7 @@ public class VierGewinntSpiel implements Zustand
         {
             hatErGewonnen = true;
         }
-        
+
         return hatErGewonnen;
     }
 
@@ -320,12 +334,12 @@ public class VierGewinntSpiel implements Zustand
 
         return vierVorhanden;
     }
-    
+
     public Spieler gibSpieler1() {
         return spieler1;
     }
-    
-     public Spieler gibSpieler2() {
+
+    public Spieler gibSpieler2() {
         return spieler2;
     }
 }

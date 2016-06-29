@@ -54,6 +54,7 @@ public class GameClient extends Client
             if (stuecke.length == 1) {
                 if (stuecke[0].equals("+WAIT")) {
                     leereButtonBeschriftung();
+                    gewonnen.setText("");
                 }
                 if (stuecke[0].equals("+ACTIVE")) {
                     bAktiv.setBackground(Color.GREEN);

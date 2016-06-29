@@ -10,7 +10,7 @@ public class GameServer extends Server implements Zustand
     //private DBVierGewinnt db;
     private List<Spieler> spielerListe;
     private Queue<Spieler> warteschlange;
-    private static List<VierGewinntSpiel> spiele;
+    private List<VierGewinntSpiel> spiele;
 
     /**
      * Konstruktor fuer Objekte der Klasse GameServer
@@ -43,8 +43,9 @@ public class GameServer extends Server implements Zustand
                 case WAIT : processWait(spieler, pMessage); break;
                 case PASSIVE : processPassive(spieler, pMessage); break;
                 case ACTIVE : processActive(spieler, pMessage); break;
-                case OVER : processOver(spieler, pMessage);
-                default: System.out.println("Fehler, Client-Zustand nicht definiert.");
+                case OVER : processOver(spieler, pMessage); break;
+                default: System.out.println("Fehler, Client-Zustand "+ zustand+" nicht definiert.");
+                System.out.println(spieler);
             }
         } else {
             System.out.println("PANIC - kein Client mit diesen Daten.");
@@ -161,9 +162,9 @@ public class GameServer extends Server implements Zustand
     }
 
     private void processOver(Spieler pClient, String pMessage) {
+        String clientIP = pClient.gibIP();
+        int clientPort = pClient.gibPort();
         if (pMessage.equals("NEW")) {
-            String clientIP = pClient.gibIP();
-            int clientPort = pClient.gibPort();
             send(clientIP, clientPort, "Waiting for a new game");
             send(clientIP, clientPort, "+WAIT");
             VierGewinntSpiel s = gibSpielNachSpieler(pClient);
@@ -172,25 +173,24 @@ public class GameServer extends Server implements Zustand
             pClient.setzeZustand(WAIT);
             warteschlange.enqueue(pClient);
             starteSpielWennMoeglich();
-        } 
-        else if(pMessage.equals("QUIT"))
-        {
-            String clientIP = pClient.gibIP();
-            int clientPort = pClient.gibPort();
+        } else if(pMessage.equals("QUIT")) {
             send(clientIP, clientPort, "+OK see you soon");
             closeConnection(clientIP, clientPort);
             loescheClientNachIPUndPort(clientIP, clientPort);
             beendeSpiel();
-        }
-        else {
+        } else {
             send(pClient.gibIP(), pClient.gibPort(), "-ERR unknown command");
         }
     }
-    
+
     private void loescheSpielAusListe(VierGewinntSpiel pSpiel) {
-        
+        spiele.toFirst();
+        while (spiele.hasAccess()) {
+            if (pSpiel == spiele.getContent()) spiele.remove();
+            spiele.next();
+        }
     }
-    
+
     private void loescheClientNachIPUndPort(String pClientIP, int pClientPort){
         spielerListe.toFirst();
         while (spielerListe.hasAccess()) {
@@ -270,9 +270,7 @@ public class GameServer extends Server implements Zustand
         spiele.toFirst();
         while (spiele.hasAccess()) {
             VierGewinntSpiel spiel = spiele.getContent();
-            if (spiel.gibSpieler1() == pSpieler || spiel.gibSpieler2() == pSpieler) {
-                return spiel;
-            }
+            if (spiel.pruefeSpieler(pSpieler)) return spiel;
             spiele.next();
         }
         return null;
