@@ -1,16 +1,84 @@
-public class VierGewinntSpiel
+/**
+ * @author Gerrit(Spiellogik), Heiko (Adaption für Netzwerk) (Die Hinterbänkler)
+ * @version 2016-06-12
+ */
+
+public class VierGewinntSpiel implements Zustand
 {
     private Spielfeld spielfeld;
     private String aktiverSpieler;
+    private List<Spieler> spieler;
+    private Spieler spieler1;
+    private Spieler spieler2;
 
     public VierGewinntSpiel()
     {
         spielfeld = new Spielfeld();
         aktiverSpieler = "X";
+
     }
+
+    public VierGewinntSpiel(Spieler pSpieler1, Spieler pSpieler2)
+    {
+        spielfeld = new Spielfeld();
+        spieler = new List<Spieler>();
+        spieler.append(pSpieler1);
+        spieler.append(pSpieler2);
+        aktiverSpieler = "X";
+        // if (spieler1.gibZustand() == PASSIVE) spieler1.setzeZustand(ACTIVE);
+    }
+    
+    //obsolet
+    /*public void loescheSpielerNachNamen(String pName) {
+        spieler.toFirst();
+        while (spieler.hasAccess()) {
+            if (pName.equals(spieler.getContent().gibName())) spieler.remove();
+            spieler.next();
+        }
+    }*/
+    
+    public void loescheSpieler(Spieler pClient) {
+        spieler.toFirst();
+        while (spieler.hasAccess()) {
+            if (pClient == spieler.getContent()) spieler.remove();
+            spieler.next();
+        }
+    }
+    
+    public boolean pruefeSpieler(Spieler pSpieler) {
+        spieler.toFirst();
+        while (spieler.hasAccess()) {
+            if (pSpieler == spieler.getContent()) return true;
+            spieler.next();
+        }
+        return false;
+    }
+    
+    public Spieler gibGegenspieler(Spieler pSpieler) {
+        spieler.toFirst();
+        while (spieler.hasAccess()) {
+            Spieler s = spieler.getContent();
+            if (pSpieler != s) return s;
+            spieler.next();
+        }
+        return null;
+    }
+    
+    public boolean beideSpielerWeg() {
+        return spieler.isEmpty();
+    }
+
+    //     public void setzeSpieler1(Spieler pSpieler) {
+    //         spieler1 = pSpieler;
+    //     }
+    //     
+    //     public void setzeSpieler2(Spieler pSpieler) {
+    //         spieler2 = pSpieler;
+    //     }
 
     public boolean setzeSymbol(int pX, int pY)
     {
+        // if (gibAktivenSpieler2().gibSymbol().equals("X")
         if (aktiverSpieler.equals("X"))
         {
             if(pY==6 && spielfeld.gibZustandDesFeldes(pX, pY).equals("leer"))
@@ -51,23 +119,39 @@ public class VierGewinntSpiel
         }
     }
 
-    public String gibAktivenSpieler()
+    /*public String gibAktivenSpieler()
     {
         return aktiverSpieler;
-    }
+    }*/
+
+    /*public Spieler gibAktivenSpieler2() {
+        Spieler out = null;
+        if (spieler1.gibZustand() == ACTIVE) out = spieler1;
+        if (spieler2.gibZustand() == ACTIVE) out = spieler2;
+        return out;
+    }*/
+
+    /*public Spieler gibPassivenSpieler() {
+        spieler.toFirst();
+        while (spieler.hasAccess()) {
+            Spieler sp = spieler.getContent();
+            if (sp.gibZustand() == PASSIVE) return sp;
+            spieler.next();
+        }
+        return null;
+    }*/
 
     public void setzeNeuesSpiel()
     {
         spielfeld.setzeNeuesSpielfeld();
         aktiverSpieler = "X";
     }
-    
+
     public boolean gibAlleFelderVoll()
     {
         return spielfeld.gibIstSpielfeldVoll();
     }
-    
-    
+
     public boolean spielerGewonnen(String pSpieler)
     {
         boolean hatErGewonnen = false;
@@ -86,7 +170,7 @@ public class VierGewinntSpiel
         {
             hatErGewonnen = true;
         }
-        
+
         return hatErGewonnen;
     }
 
@@ -165,7 +249,7 @@ public class VierGewinntSpiel
             }
         }
 
-        return (anzahlDerMarkierungen>3);
+        return vierVorhanden;
     }
 
     public boolean vierInEinerDiagonalen(String pSpieler)
@@ -264,5 +348,17 @@ public class VierGewinntSpiel
         }
 
         return vierVorhanden;
+    }
+
+    /*public Spieler gibSpieler1() {
+        return spieler1;
+    }*/
+
+    /*public Spieler gibSpieler2() {
+        return spieler2;
+    }*/
+    
+    public String toString() {
+        return spielfeld.toString();
     }
 }

@@ -1,3 +1,8 @@
+/**
+ * @author Gerrit (Die Hinterbänkler)
+ * @version 2016-06-12
+ */
+
 public class Feld
 {
     private int zustand;
@@ -21,7 +26,11 @@ public class Feld
     {
         zustand = 2;
     }
-
+    
+    public int gibInhalt() {
+        return zustand;
+    }
+    
     public String gibZustand()
     {
         if(zustand==0)
