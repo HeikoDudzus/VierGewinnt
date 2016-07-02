@@ -13,7 +13,7 @@ public class GUI extends JFrame implements ActionListener
     private JLabel aktiv;
     private SpielButton[][] buttons;
     private JButton neuesSpiel, beendeSpiel;
-    private VierGewinntSpiel vierGewinntSpiel;
+    //private VierGewinntSpiel vierGewinntSpiel;
     
 
     private GameClient gameClient;
@@ -64,6 +64,7 @@ public class GUI extends JFrame implements ActionListener
         buttons = new SpielButton[7][7];
         //Label für die Anzeige eines Gewinns.
         gewonnen = new JLabel("");
+        gewonnen.setFont(new Font("Arial", Font.BOLD, 14));
         gewonnen.setBounds(160, 120, 400, 50);
         gewonnen.setForeground(Color.RED);
         add(gewonnen);
@@ -125,7 +126,7 @@ public class GUI extends JFrame implements ActionListener
         ipPortConnect.addActionListener(this);
 
         this.repaint();
-        vierGewinntSpiel = new VierGewinntSpiel();
+        //vierGewinntSpiel = new VierGewinntSpiel();
     }
 
     private void verbinde(String pIP, int pPort) {
@@ -214,7 +215,7 @@ public class GUI extends JFrame implements ActionListener
 
         public void mouseClicked(MouseEvent me) {
             if (me.getButton() == MouseEvent.BUTTON1) {
-                gameClient.waehleFeld(x,y);
+                if (gameClient != null) gameClient.waehleFeld(x,y);
             }
         }
     }

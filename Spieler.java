@@ -29,7 +29,6 @@ public class Spieler implements Zustand
         zustand = NICKNAME;
     }
     
-    
     public String gibName()
     {
         return name;

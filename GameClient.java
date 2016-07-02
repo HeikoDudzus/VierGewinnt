@@ -47,7 +47,7 @@ public class GameClient extends Client
 
     public void processMessage(String pMessage) {
         // Nachricht für Mensch oder Maschine?
-        if (pMessage != null && !pMessage.startsWith("+")) {
+        if (pMessage != null && !pMessage.startsWith("+") && !pMessage.startsWith("-")) {
             ausgabe.append(pMessage+"\n");
         } else {
             String[] stuecke = pMessage.split(" ");

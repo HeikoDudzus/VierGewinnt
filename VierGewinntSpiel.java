@@ -27,11 +27,20 @@ public class VierGewinntSpiel implements Zustand
         aktiverSpieler = "X";
         // if (spieler1.gibZustand() == PASSIVE) spieler1.setzeZustand(ACTIVE);
     }
-
-    public void loescheSpielerNachNamen(String pName) {
+    
+    //obsolet
+    /*public void loescheSpielerNachNamen(String pName) {
         spieler.toFirst();
         while (spieler.hasAccess()) {
             if (pName.equals(spieler.getContent().gibName())) spieler.remove();
+            spieler.next();
+        }
+    }*/
+    
+    public void loescheSpieler(Spieler pClient) {
+        spieler.toFirst();
+        while (spieler.hasAccess()) {
+            if (pClient == spieler.getContent()) spieler.remove();
             spieler.next();
         }
     }
@@ -44,7 +53,17 @@ public class VierGewinntSpiel implements Zustand
         }
         return false;
     }
-
+    
+    public Spieler gibGegenspieler(Spieler pSpieler) {
+        spieler.toFirst();
+        while (spieler.hasAccess()) {
+            Spieler s = spieler.getContent();
+            if (pSpieler != s) return s;
+            spieler.next();
+        }
+        return null;
+    }
+    
     public boolean beideSpielerWeg() {
         return spieler.isEmpty();
     }
@@ -100,23 +119,19 @@ public class VierGewinntSpiel implements Zustand
         }
     }
 
-    public String gibAktivenSpieler()
+    /*public String gibAktivenSpieler()
     {
         return aktiverSpieler;
-    }
+    }*/
 
-    public void setzeAktivenSpieler(Spieler pSpieler) {
-
-    }
-
-    public Spieler gibAktivenSpieler2() {
+    /*public Spieler gibAktivenSpieler2() {
         Spieler out = null;
         if (spieler1.gibZustand() == ACTIVE) out = spieler1;
         if (spieler2.gibZustand() == ACTIVE) out = spieler2;
         return out;
-    }
+    }*/
 
-    public Spieler gibPassivenSpieler() {
+    /*public Spieler gibPassivenSpieler() {
         spieler.toFirst();
         while (spieler.hasAccess()) {
             Spieler sp = spieler.getContent();
@@ -124,7 +139,7 @@ public class VierGewinntSpiel implements Zustand
             spieler.next();
         }
         return null;
-    }
+    }*/
 
     public void setzeNeuesSpiel()
     {
@@ -335,11 +350,15 @@ public class VierGewinntSpiel implements Zustand
         return vierVorhanden;
     }
 
-    public Spieler gibSpieler1() {
+    /*public Spieler gibSpieler1() {
         return spieler1;
-    }
+    }*/
 
-    public Spieler gibSpieler2() {
+    /*public Spieler gibSpieler2() {
         return spieler2;
+    }*/
+    
+    public String toString() {
+        return spielfeld.toString();
     }
 }
