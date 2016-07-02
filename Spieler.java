@@ -28,7 +28,7 @@ public class Spieler implements Zustand
         this.port = pPort;
         zustand = NICKNAME;
     }
-
+    
     public String gibName()
     {
         return name;

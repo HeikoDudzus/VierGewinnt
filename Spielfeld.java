@@ -60,4 +60,28 @@ public class Spielfeld
             }
         }
     }
+    
+    public String toString() {
+        String [] zeichen = {" ", "X", "O"};
+        int groesse = 7;
+        String out = "";
+        out += "+";
+        for (int x=0; x < groesse; x++) {
+            out += "-";
+        }
+        out += "+\n";
+        for (int y = 0; y < groesse; y++) {
+            out +="|";
+            for (int x = 0; x < groesse; x++) {
+                out += zeichen[spielfeldflaeche[x][y].gibInhalt()];
+            }
+            out += "|\n";
+        }
+        out += "+";
+        for (int x=0; x < groesse; x++) {
+            out += "-";
+        }
+        out += "+\n";
+        return out;
+    }  
 }
