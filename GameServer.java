@@ -1,7 +1,7 @@
 /**
  * Klasse GameServer.
  * 
- * @author Heiko Dudzus
+ * @author Heiko Dudzus, Gerrit (Die Hinterbänkler)
  * @version 2016-04-27
  */
 
@@ -97,9 +97,11 @@ public class GameServer extends Server implements Zustand
         Spieler gegenspieler = s.gibGegenspieler(pClient);
         if (pMessage.equals("QUIT")) {
             send(clientIP, clientPort, "+OK see you soon");
-            //loescheClientNachIPUndPort(clientIP, clientPort);
-            send(gegenspieler.gibIP(), gegenspieler.gibPort(), "+WON");
-            registriereGewinnerInDB(gegenspieler);
+            if (gegenspieler != null) {
+                send(gegenspieler.gibIP(), gegenspieler.gibPort(), "+WON");
+                gegenspieler.setzeZustand(OVER);
+                registriereGewinnerInDB(gegenspieler);
+            }
             s.loescheSpieler(pClient);
             if (s.beideSpielerWeg()) loescheSpielAusListe(s);
             loescheSpieler(pClient);
@@ -116,13 +118,18 @@ public class GameServer extends Server implements Zustand
         String symbol = pClient.gibSymbol();
         VierGewinntSpiel s = gibSpielNachSpieler(pClient);
         Spieler gegenspieler = s.gibGegenspieler(pClient);
+        boolean validInt = true;
+        int i=0, j=0;
         if (stuecke.length == 3) {
             if (stuecke[0].equals("MOVE")) {
-                int i = Integer.parseInt(stuecke[1]);
-                int j = Integer.parseInt(stuecke[2]);
-                // Exception abfangen
-                // zugehöriges Spiel suchen
-                if (s != null) {
+                try {
+                    i = Integer.parseInt(stuecke[1]);
+                    j = Integer.parseInt(stuecke[2]);
+                } catch (Exception e) {
+                    System.out.println("Konnte keine Integer parsen!");
+                    validInt = false;
+                }
+                if (s != null && validInt) {
                     boolean status = s.setzeSymbol(i,j);
                     if (status) {
                         send(clientIP, clientPort, "+SET "+symbol+" "+i+" "+j);
@@ -153,8 +160,11 @@ public class GameServer extends Server implements Zustand
         } else if (stuecke.length == 1) {
             if (pMessage.equals("QUIT")) {
                 send(clientIP, clientPort, "+OK see you soon");
-                send(gegenspieler.gibIP(), gegenspieler.gibPort(), "+WON");
-                registriereGewinnerInDB(gegenspieler);
+                if (gegenspieler != null) {
+                    send(gegenspieler.gibIP(), gegenspieler.gibPort(), "+WON");
+                    gegenspieler.setzeZustand(OVER);
+                    registriereGewinnerInDB(gegenspieler);
+                }
                 s.loescheSpieler(pClient);
                 if (s.beideSpielerWeg()) loescheSpielAusListe(s);
                 loescheSpieler(pClient);
@@ -336,13 +346,13 @@ public class GameServer extends Server implements Zustand
 
     private void registriereGewinnerInDB(Spieler pSpieler) {
     }
+
     private void registriereSpielInDB(Spieler pSpieler1, Spieler pSpieler2) {
     }
     /*private void beendeSpiel(VierGewinntSpiel pSpiel) 
     {
 
     }*/
-
 
     //Fuer die Verwendung auf Linux-Servern und Windows-Clients
     /*

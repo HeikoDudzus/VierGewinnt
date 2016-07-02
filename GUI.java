@@ -1,5 +1,5 @@
 /**
- * @author Gerrit (Die Hinterbänkler)
+ * @author Gerrit, Lucia, Heiko (Die Hinterbänkler)
  * @version 2016-06-12
  */
 
@@ -14,7 +14,6 @@ public class GUI extends JFrame implements ActionListener
     private SpielButton[][] buttons;
     private JButton neuesSpiel, beendeSpiel;
     //private VierGewinntSpiel vierGewinntSpiel;
-    
 
     private GameClient gameClient;
     private JTextField port, ip;
@@ -150,7 +149,7 @@ public class GUI extends JFrame implements ActionListener
     {
         if(k.getSource() == nicknameButton)
         {
-            gameClient.setzeNamen("" + nicknameEingabefenster.getText());
+            if (gameClient != null) gameClient.setzeNamen("" + nicknameEingabefenster.getText());
         }
         else if(k.getSource() == ipPortConnect)
         {
@@ -158,13 +157,12 @@ public class GUI extends JFrame implements ActionListener
         }
         else if(k.getSource() == beendeSpiel)
         {
-            gameClient.beenden();
+            if (gameClient != null) gameClient.beenden();
         }
         else if(k.getSource() == neuesSpiel)
         {
-            gameClient.fordereNeuesSpiel();
+            if (gameClient != null) gameClient.fordereNeuesSpiel();
         }
-        
 
         //         if(buttonsFreiGegeben == true)
         //         {

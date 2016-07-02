@@ -19,10 +19,10 @@ comment16.params=pStartX\ pStartY\ pSpieler
 comment16.target=boolean\ eineDiagonaleLinksPruefen(int,\ int,\ java.lang.String)
 comment17.params=
 comment17.target=java.lang.String\ toString()
-comment17.text=public\ Spieler\ gibSpieler2()\ {\r\n\ \ \ \ \ \ \ \ return\ spieler2;\r\n}
+comment17.text=public\ Spieler\ gibSpieler2()\ {\r\n\ \ \ \ return\ spieler2;\r\n}
 comment2.params=pClient
 comment2.target=void\ loescheSpieler(Spieler)
-comment2.text=public\ void\ loescheSpielerNachNamen(String\ pName)\ {\r\n\ \ \ \ \ \ \ \ spieler.toFirst();\r\n\ \ \ \ \ \ \ \ while\ (spieler.hasAccess())\ {\r\n\ \ \ \ \ \ \ \ \ \ \ \ if\ (pName.equals(spieler.getContent().gibName()))\ spieler.remove();\r\n\ \ \ \ \ \ \ \ \ \ \ \ spieler.next();\r\n\ \ \ \ \ \ \ \ }\r\n}
+comment2.text=public\ void\ loescheSpielerNachNamen(String\ pName)\ {\r\n\ \ \ \ spieler.toFirst();\r\n\ \ \ \ while\ (spieler.hasAccess())\ {\r\n\ \ \ \ if\ (pName.equals(spieler.getContent().gibName()))\ spieler.remove();\r\n\ \ \ \ spieler.next();\r\n\ \ \ \ }\r\n}
 comment3.params=pSpieler
 comment3.target=boolean\ pruefeSpieler(Spieler)
 comment4.params=pSpieler
@@ -33,7 +33,7 @@ comment6.params=pX\ pY
 comment6.target=boolean\ setzeSymbol(int,\ int)
 comment7.params=
 comment7.target=void\ setzeNeuesSpiel()
-comment7.text=public\ Spieler\ gibPassivenSpieler()\ {\r\n\ \ \ \ \ \ \ \ spieler.toFirst();\r\n\ \ \ \ \ \ \ \ while\ (spieler.hasAccess())\ {\r\n\ \ \ \ \ \ \ \ \ \ \ \ Spieler\ sp\ \=\ spieler.getContent();\r\n\ \ \ \ \ \ \ \ \ \ \ \ if\ (sp.gibZustand()\ \=\=\ PASSIVE)\ return\ sp;\r\n\ \ \ \ \ \ \ \ \ \ \ \ spieler.next();\r\n\ \ \ \ \ \ \ \ }\r\n\ \ \ \ \ \ \ \ return\ null;\r\n}
+comment7.text=public\ Spieler\ gibPassivenSpieler()\ {\r\n\ \ \ \ spieler.toFirst();\r\n\ \ \ \ while\ (spieler.hasAccess())\ {\r\n\ \ \ \ Spieler\ sp\ \=\ spieler.getContent();\r\n\ \ \ \ if\ (sp.gibZustand()\ \=\=\ PASSIVE)\ return\ sp;\r\n\ \ \ \ spieler.next();\r\n\ \ \ \ }\r\n\ \ \ \ return\ null;\r\n}
 comment8.params=
 comment8.target=boolean\ gibAlleFelderVoll()
 comment9.params=pSpieler

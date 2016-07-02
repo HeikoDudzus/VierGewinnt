@@ -1,5 +1,5 @@
 /**
- * @author Gerrit(Spiellogik), Heiko (Adaption für Netzwerk) (Die Hinterbänkler)
+ * @author Gerrit(Spiellogik), Heiko (Änderungen für Netzwerk) (Die Hinterbänkler)
  * @version 2016-06-12
  */
 
@@ -27,16 +27,16 @@ public class VierGewinntSpiel implements Zustand
         aktiverSpieler = "X";
         // if (spieler1.gibZustand() == PASSIVE) spieler1.setzeZustand(ACTIVE);
     }
-    
+
     //obsolet
     /*public void loescheSpielerNachNamen(String pName) {
-        spieler.toFirst();
-        while (spieler.hasAccess()) {
-            if (pName.equals(spieler.getContent().gibName())) spieler.remove();
-            spieler.next();
-        }
+    spieler.toFirst();
+    while (spieler.hasAccess()) {
+    if (pName.equals(spieler.getContent().gibName())) spieler.remove();
+    spieler.next();
+    }
     }*/
-    
+
     public void loescheSpieler(Spieler pClient) {
         spieler.toFirst();
         while (spieler.hasAccess()) {
@@ -44,7 +44,7 @@ public class VierGewinntSpiel implements Zustand
             spieler.next();
         }
     }
-    
+
     public boolean pruefeSpieler(Spieler pSpieler) {
         spieler.toFirst();
         while (spieler.hasAccess()) {
@@ -53,7 +53,7 @@ public class VierGewinntSpiel implements Zustand
         }
         return false;
     }
-    
+
     public Spieler gibGegenspieler(Spieler pSpieler) {
         spieler.toFirst();
         while (spieler.hasAccess()) {
@@ -63,7 +63,7 @@ public class VierGewinntSpiel implements Zustand
         }
         return null;
     }
-    
+
     public boolean beideSpielerWeg() {
         return spieler.isEmpty();
     }
@@ -78,67 +78,70 @@ public class VierGewinntSpiel implements Zustand
 
     public boolean setzeSymbol(int pX, int pY)
     {
-        // if (gibAktivenSpieler2().gibSymbol().equals("X")
-        if (aktiverSpieler.equals("X"))
-        {
-            if(pY==6 && spielfeld.gibZustandDesFeldes(pX, pY).equals("leer"))
-            {          
-                spielfeld.setzeXaufFeld(pX, pY);
-                aktiverSpieler = "O";
-                return true;
-            }
-            else if(spielfeld.gibZustandDesFeldes(pX, pY).equals("leer") && !spielfeld.gibZustandDesFeldes(pX, pY+1).equals("leer"))
+        if (pX >= 0 && pX < 7 && pY >= 0 && pY < 7) {
+            if (aktiverSpieler.equals("X"))
             {
-                spielfeld.setzeXaufFeld(pX, pY);
-                aktiverSpieler = "O";
-                return true;
-            }
-            else 
-            {
-                return false;
-            }
-        }
-        else
-        {
-            if(pY==6 && spielfeld.gibZustandDesFeldes(pX, pY).equals("leer"))
-            {          
-                spielfeld.setzeOaufFeld(pX, pY);
-                aktiverSpieler = "X";
-                return true;
-            }
-            else if(spielfeld.gibZustandDesFeldes(pX, pY).equals("leer") && !spielfeld.gibZustandDesFeldes(pX, pY+1).equals("leer"))
-            {
-                spielfeld.setzeOaufFeld(pX, pY);
-                aktiverSpieler = "X";
-                return true;
+                if(pY==6 && spielfeld.gibZustandDesFeldes(pX, pY).equals("leer"))
+                {          
+                    spielfeld.setzeXaufFeld(pX, pY);
+                    aktiverSpieler = "O";
+                    return true;
+                }
+                else if(spielfeld.gibZustandDesFeldes(pX, pY).equals("leer") && !spielfeld.gibZustandDesFeldes(pX, pY+1).equals("leer"))
+                {
+                    spielfeld.setzeXaufFeld(pX, pY);
+                    aktiverSpieler = "O";
+                    return true;
+                }
+                else 
+                {
+                    return false;
+                }
             }
             else
             {
-                return false;
+                if(pY==6 && spielfeld.gibZustandDesFeldes(pX, pY).equals("leer"))
+                {          
+                    spielfeld.setzeOaufFeld(pX, pY);
+                    aktiverSpieler = "X";
+                    return true;
+                }
+                else if(spielfeld.gibZustandDesFeldes(pX, pY).equals("leer") && !spielfeld.gibZustandDesFeldes(pX, pY+1).equals("leer"))
+                {
+                    spielfeld.setzeOaufFeld(pX, pY);
+                    aktiverSpieler = "X";
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
+        } else {
+            return false;
         }
     }
 
     /*public String gibAktivenSpieler()
     {
-        return aktiverSpieler;
+    return aktiverSpieler;
     }*/
 
     /*public Spieler gibAktivenSpieler2() {
-        Spieler out = null;
-        if (spieler1.gibZustand() == ACTIVE) out = spieler1;
-        if (spieler2.gibZustand() == ACTIVE) out = spieler2;
-        return out;
+    Spieler out = null;
+    if (spieler1.gibZustand() == ACTIVE) out = spieler1;
+    if (spieler2.gibZustand() == ACTIVE) out = spieler2;
+    return out;
     }*/
 
     /*public Spieler gibPassivenSpieler() {
-        spieler.toFirst();
-        while (spieler.hasAccess()) {
-            Spieler sp = spieler.getContent();
-            if (sp.gibZustand() == PASSIVE) return sp;
-            spieler.next();
-        }
-        return null;
+    spieler.toFirst();
+    while (spieler.hasAccess()) {
+    Spieler sp = spieler.getContent();
+    if (sp.gibZustand() == PASSIVE) return sp;
+    spieler.next();
+    }
+    return null;
     }*/
 
     public void setzeNeuesSpiel()
@@ -351,13 +354,13 @@ public class VierGewinntSpiel implements Zustand
     }
 
     /*public Spieler gibSpieler1() {
-        return spieler1;
+    return spieler1;
     }*/
 
     /*public Spieler gibSpieler2() {
-        return spieler2;
+    return spieler2;
     }*/
-    
+
     public String toString() {
         return spielfeld.toString();
     }
