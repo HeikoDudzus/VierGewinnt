@@ -1,0 +1,17 @@
+#BlueJ class context
+comment0.params=pIPAdresse\ pPortNr\ pButtons\ pAusgabe\ pEigenerName\ pGegnerName\ pGewonnen\ pAktiv
+comment0.target=GameClient(java.lang.String,\ int,\ SpielButton[][],\ javax.swing.JTextArea,\ javax.swing.JLabel,\ javax.swing.JLabel,\ javax.swing.JLabel,\ javax.swing.JLabel)
+comment0.text=\r\n\ Constructor\ for\ objects\ of\ class\ GameClient\r\n
+comment1.params=pMessage
+comment1.target=void\ processMessage(java.lang.String)
+comment2.params=pI\ pJ
+comment2.target=void\ waehleFeld(int,\ int)
+comment3.params=
+comment3.target=void\ fordereNeuesSpiel()
+comment4.params=
+comment4.target=void\ beenden()
+comment5.params=
+comment5.target=void\ leereButtonBeschriftung()
+comment6.params=pName
+comment6.target=void\ setzeNamen(java.lang.String)
+numComments=7

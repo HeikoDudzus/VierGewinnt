@@ -1,0 +1,255 @@
+[Files]
+File0=Client.java
+File1=Connection.java
+File2=Feld.java
+File3=GameClient.java
+File4=GameServer.java
+File5=GUI.java
+File6=List.java
+File7=Queue.java
+File8=Server.java
+File9=SpielButton.java
+File10=Spieler.java
+File11=Spielfeld.java
+File12=VierGewinntSpiel.java
+File13=Zustand.java
+
+[Box:  - Client]
+X=2856
+Y=40
+MinVis=0
+ShowParameter=4
+SortOrder=0
+ShowIcons=0
+FontSize=10
+FontName=MS Sans Serif
+
+[Box:  - Client$Clientempfaenger]
+X=2921
+Y=393
+MinVis=0
+ShowParameter=4
+SortOrder=0
+ShowIcons=0
+FontSize=10
+FontName=MS Sans Serif
+
+[Box:  - Connection]
+X=2729
+Y=794
+MinVis=0
+ShowParameter=4
+SortOrder=0
+ShowIcons=0
+FontSize=10
+FontName=MS Sans Serif
+
+[Box:  - Feld]
+X=1550
+Y=1596
+MinVis=0
+ShowParameter=4
+SortOrder=0
+ShowIcons=0
+FontSize=10
+FontName=MS Sans Serif
+
+[Box:  - GameClient]
+X=1944
+Y=393
+MinVis=0
+ShowParameter=4
+SortOrder=0
+ShowIcons=0
+FontSize=10
+FontName=MS Sans Serif
+
+[Box:  - GameServer]
+X=583
+Y=393
+MinVis=0
+ShowParameter=4
+SortOrder=0
+ShowIcons=0
+FontSize=10
+FontName=MS Sans Serif
+
+[Box:  - GUI]
+X=1808
+Y=40
+MinVis=0
+ShowParameter=4
+SortOrder=0
+ShowIcons=0
+FontSize=10
+FontName=MS Sans Serif
+
+[Box:  - GUI$MeinMouseAdapter]
+X=1707
+Y=393
+MinVis=0
+ShowParameter=4
+SortOrder=0
+ShowIcons=0
+FontSize=10
+FontName=MS Sans Serif
+
+[Box:  - List<ContentType>]
+X=296
+Y=40
+MinVis=0
+ShowParameter=4
+SortOrder=0
+ShowIcons=0
+FontSize=10
+FontName=MS Sans Serif
+
+[Box:  - List<ContentType>$ListNode]
+X=294
+Y=393
+MinVis=0
+ShowParameter=4
+SortOrder=0
+ShowIcons=0
+FontSize=10
+FontName=MS Sans Serif
+
+[Box:  - Queue<ContentType>]
+X=37
+Y=40
+MinVis=0
+ShowParameter=4
+SortOrder=0
+ShowIcons=0
+FontSize=10
+FontName=MS Sans Serif
+
+[Box:  - Queue<ContentType>$QueueNode]
+X=20
+Y=393
+MinVis=0
+ShowParameter=4
+SortOrder=0
+ShowIcons=0
+FontSize=10
+FontName=MS Sans Serif
+
+[Box:  - Server]
+X=838
+Y=40
+MinVis=0
+ShowParameter=4
+SortOrder=0
+ShowIcons=0
+FontSize=10
+FontName=MS Sans Serif
+
+[Box:  - Server$ServerConnection]
+X=1891
+Y=1243
+MinVis=0
+ShowParameter=4
+SortOrder=0
+ShowIcons=0
+FontSize=10
+FontName=MS Sans Serif
+
+[Box:  - Server$ServerSchleife]
+X=1254
+Y=393
+MinVis=0
+ShowParameter=4
+SortOrder=0
+ShowIcons=0
+FontSize=10
+FontName=MS Sans Serif
+
+[Box:  - SpielButton]
+X=20
+Y=1596
+MinVis=0
+ShowParameter=4
+SortOrder=0
+ShowIcons=0
+FontSize=10
+FontName=MS Sans Serif
+
+[Box:  - Spieler]
+X=925
+Y=1468
+MinVis=0
+ShowParameter=4
+SortOrder=0
+ShowIcons=0
+FontSize=10
+FontName=MS Sans Serif
+
+[Box:  - Spielfeld]
+X=1484
+Y=1243
+MinVis=0
+ShowParameter=4
+SortOrder=0
+ShowIcons=0
+FontSize=10
+FontName=MS Sans Serif
+
+[Box:  - VierGewinntSpiel]
+X=1380
+Y=794
+MinVis=0
+ShowParameter=4
+SortOrder=0
+ShowIcons=0
+FontSize=10
+FontName=MS Sans Serif
+
+[Box:  - Zustand]
+X=1003
+Y=1596
+MinVis=0
+ShowParameter=4
+SortOrder=0
+ShowIcons=0
+FontSize=10
+FontName=MS Sans Serif
+
+[Diagram]
+comments=0
+OffsetX=0
+OffsetY=0
+Visibility=0
+ShowParameter=4
+SortOrder=0
+ShowIcons=0
+ShowConnections=0
+Fontname=MS Sans Serif
+Fontsize=10
+ShowObjectDiagram=0
+
+[Connections]
+V0=Client#Connection#AssociationDirected####0#0#0
+V1=Client#Client$Clientempfaenger#AssociationBidirectional####0#0#0
+V2=Client$Clientempfaenger#Connection#AssociationDirected####0#0#0
+V3=GameClient#Client#Inheritends####0#0#0
+V4=GameServer#Server#Inheritends####0#0#0
+V5=GameServer#Zustand#Implements####0#0#0
+V6=GameServer#Spieler#Aggregation####0#0#0
+V7=GameServer#VierGewinntSpiel#Aggregation####0#0#0
+V8=GUI#VierGewinntSpiel#AssociationDirected####0#0#0
+V9=GUI#GameClient#AssociationDirected####0#0#0
+V10=GUI#GUI$MeinMouseAdapter#AssociationDirected####0#0#0
+V11=List<ContentType>#List<ContentType>$ListNode#AssociationDirected####0#0#0
+V12=Queue<ContentType>#Queue<ContentType>$QueueNode#AssociationDirected####0#0#0
+V13=Server$ServerConnection#Connection#Inheritends####0#0#0
+V14=Server#Server$ServerConnection#AssociationBidirectional####0#0#0
+V15=Server#Server$ServerSchleife#AssociationBidirectional####0#0#0
+V16=Spieler#Zustand#Implements####0#0#0
+V17=Spielfeld#Feld#Aggregation####0#0#0
+V18=VierGewinntSpiel#Zustand#Implements####0#0#0
+V19=VierGewinntSpiel#Spielfeld#AssociationDirected####0#0#0
+V20=VierGewinntSpiel#Spieler#AssociationDirected####0#0#0
+
+[Interactive]
+I0=
+

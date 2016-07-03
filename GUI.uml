@@ -1,0 +1,54 @@
+[Files]
+File0=Client.java
+File1=GUI.java
+File2=..\..\OneDrive\Schule\2015-16\Abiturprüfung\new  2.java
+
+[Box:  - Client]
+X=80
+Y=40
+MinVis=0
+ShowParameter=4
+SortOrder=0
+ShowIcons=0
+FontSize=10
+FontName=MS Sans Serif
+
+[Box:  - Client$Clientempfaenger]
+X=20
+Y=377
+MinVis=0
+ShowParameter=4
+SortOrder=0
+ShowIcons=0
+FontSize=10
+FontName=MS Sans Serif
+
+[Box:  - GUI]
+X=349
+Y=40
+MinVis=0
+ShowParameter=4
+SortOrder=0
+ShowIcons=0
+FontSize=10
+FontName=MS Sans Serif
+
+[Diagram]
+comments=0
+OffsetX=0
+OffsetY=0
+Visibility=0
+ShowParameter=4
+SortOrder=0
+ShowIcons=0
+ShowConnections=0
+Fontname=MS Sans Serif
+Fontsize=10
+ShowObjectDiagram=0
+
+[Connections]
+V0=Client#Client$Clientempfaenger#AssociationBidirectional####0#0#0
+
+[Interactive]
+I0=
+
