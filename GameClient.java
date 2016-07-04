@@ -21,7 +21,7 @@ public class GameClient extends Client
     private JLabel eigenerName;
     private JLabel gegnerName;
     private JLabel gewonnen;
-    private JLabel bAktiv;
+    private SpielLabel bAktiv;
     private String symbol;
     private String name;
     private String gegner;
@@ -30,7 +30,7 @@ public class GameClient extends Client
      * Constructor for objects of class GameClient
      */
     public GameClient(String pIPAdresse, int pPortNr, SpielButton[][] pButtons, JTextArea pAusgabe,
-    JLabel pEigenerName, JLabel pGegnerName, JLabel pGewonnen, JLabel pAktiv)
+    JLabel pEigenerName, JLabel pGegnerName, JLabel pGewonnen, SpielLabel pAktiv)
     {
         super(pIPAdresse, pPortNr);
         buttons = pButtons;
@@ -47,20 +47,19 @@ public class GameClient extends Client
 
     public void processMessage(String pMessage) {
         // Nachricht für Mensch oder Maschine?
-        if (pMessage != null && !pMessage.startsWith("+") && !pMessage.startsWith("-")) {
+        if (pMessage != null && !pMessage.startsWith("+")) {
             ausgabe.append(pMessage+"\n");
         } else {
             String[] stuecke = pMessage.split(" ");
             if (stuecke.length == 1) {
                 if (stuecke[0].equals("+WAIT")) {
                     leereButtonBeschriftung();
-                    gewonnen.setText("");
                 }
                 if (stuecke[0].equals("+ACTIVE")) {
-                    bAktiv.setBackground(Color.GREEN);
+                    bAktiv.setGameColor(Color.GREEN);
                 }
                 if (stuecke[0].equals("+PASSIVE")) {
-                    bAktiv.setBackground(Color.RED);
+                    bAktiv.setGameColor(Color.GRAY);
                 }
                 if (stuecke[0].equals("+WON")) {
                     gewonnen.setText("Gewonnen! Herzlichen Glückwunsch");

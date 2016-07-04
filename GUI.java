@@ -1,5 +1,5 @@
 /**
- * @author Gerrit, Lucia, Heiko (Die Hinterbänkler)
+ * @author Gerrit, Lucia (Die Hinterbänkler)
  * @version 2016-06-12
  */
 
@@ -9,11 +9,12 @@ import java.awt.event.*;
 
 public class GUI extends JFrame implements ActionListener
 {
-    private JLabel ueberschrift, spielerAktiv1, spielerAktiv2, gewonnen, labelRed;
-    private JLabel aktiv;
+    private JLabel ueberschrift, spielerAktiv1, spielerAktiv2, gewonnen;
+    private SpielLabel aktiv;
     private SpielButton[][] buttons;
     private JButton neuesSpiel, beendeSpiel;
-    //private VierGewinntSpiel vierGewinntSpiel;
+    private VierGewinntSpiel vierGewinntSpiel;
+    
 
     private GameClient gameClient;
     private JTextField port, ip;
@@ -32,14 +33,15 @@ public class GUI extends JFrame implements ActionListener
         super("Vier gewinnt!");
         setLayout(null);
         setVisible(true);
-        setResizable(false);
-        setSize(860, 1100);
+        setResizable(true);
+        setSize(1024, 880);
         setBackground(Color.BLUE);
 
         //Erstellung der festen Texte (Labels).
         ueberschrift = new JLabel("Vier Gewinnt");
+        ueberschrift.setForeground(Color.BLUE);
         ueberschrift.setBounds(400, 15, 300, 60);
-        ueberschrift.setFont(new Font("Arial", Font.BOLD, 15));
+        ueberschrift.setFont(new Font("Arial", Font.BOLD, 18));
         add(ueberschrift);
         spielerAktiv1 = new JLabel("Sie müssen sich verbinden und einen Nickname wählen.");     
         spielerAktiv1.setBounds(160, 70, 350, 50);
@@ -49,21 +51,18 @@ public class GUI extends JFrame implements ActionListener
         // Anzeige von Nachrichten des Gameservers
         nachrichten = new JTextArea();
         JScrollPane laufleiste = new JScrollPane(nachrichten);
-        laufleiste.setBounds(100, 850, 560, 100);
+        laufleiste.setBounds(150, 720, 560, 100);
         nachrichten.setEditable(false);
         add(laufleiste);
 
         // Label, das anzeigt, ob der Spieler aktiv ist
-        aktiv = new JLabel("");
+        aktiv = new SpielLabel();
         aktiv.setBounds(20,20,50,50);
-        aktiv.setOpaque(true);
-        aktiv.setBackground(Color.BLUE);
         add(aktiv);
 
         buttons = new SpielButton[7][7];
         //Label für die Anzeige eines Gewinns.
         gewonnen = new JLabel("");
-        gewonnen.setFont(new Font("Arial", Font.BOLD, 14));
         gewonnen.setBounds(160, 120, 400, 50);
         gewonnen.setForeground(Color.RED);
         add(gewonnen);
@@ -98,34 +97,34 @@ public class GUI extends JFrame implements ActionListener
 
         //Eingabemenue fuer Nick, IP und Port
         nickname = new JLabel("2. Nickname:");
-        nickname.setBounds(100, 810, 80, 30);
+        nickname.setBounds(800, 250, 80, 30);
         add(nickname);
         nicknameEingabefenster = new JTextField();
-        nicknameEingabefenster.setBounds(190, 810, 100, 30);
+        nicknameEingabefenster.setBounds(800, 280, 100, 30);
         add(nicknameEingabefenster);
         nicknameButton = new JButton("send");
-        nicknameButton.setBounds(410, 810, 90, 30);
+        nicknameButton.setBounds(800, 310, 90, 30);
         add(nicknameButton);
         nicknameButton.addActionListener(this);
         ipSchrift = new JLabel("1. IP:");
-        ipSchrift.setBounds(100, 770, 30, 30);
+        ipSchrift.setBounds(800, 50, 30, 30);
         add(ipSchrift);
         ipEingabefenster = new JTextField("127.0.0.1");
-        ipEingabefenster.setBounds(140, 770, 100, 30);
+        ipEingabefenster.setBounds(800, 80, 100, 30);
         add(ipEingabefenster);
         portSchrift = new JLabel("Port:");
-        portSchrift.setBounds(250, 770, 40, 30);
+        portSchrift.setBounds(800, 110, 40, 30);
         add(portSchrift);
         portEingabefenster = new JTextField("10000");
-        portEingabefenster.setBounds(290, 770, 100, 30);
+        portEingabefenster.setBounds(800, 140, 100, 30);
         add(portEingabefenster);
         ipPortConnect = new JButton("connect");
-        ipPortConnect.setBounds(410, 770, 90, 30);
+        ipPortConnect.setBounds(800, 170, 90, 30);
         add(ipPortConnect);
         ipPortConnect.addActionListener(this);
 
         this.repaint();
-        //vierGewinntSpiel = new VierGewinntSpiel();
+        vierGewinntSpiel = new VierGewinntSpiel();
     }
 
     private void verbinde(String pIP, int pPort) {
@@ -149,7 +148,7 @@ public class GUI extends JFrame implements ActionListener
     {
         if(k.getSource() == nicknameButton)
         {
-            if (gameClient != null) gameClient.setzeNamen("" + nicknameEingabefenster.getText());
+            gameClient.setzeNamen("" + nicknameEingabefenster.getText());
         }
         else if(k.getSource() == ipPortConnect)
         {
@@ -157,12 +156,13 @@ public class GUI extends JFrame implements ActionListener
         }
         else if(k.getSource() == beendeSpiel)
         {
-            if (gameClient != null) gameClient.beenden();
+            gameClient.beenden();
         }
         else if(k.getSource() == neuesSpiel)
         {
-            if (gameClient != null) gameClient.fordereNeuesSpiel();
+            gameClient.fordereNeuesSpiel();
         }
+        
 
         //         if(buttonsFreiGegeben == true)
         //         {
@@ -213,7 +213,7 @@ public class GUI extends JFrame implements ActionListener
 
         public void mouseClicked(MouseEvent me) {
             if (me.getButton() == MouseEvent.BUTTON1) {
-                if (gameClient != null) gameClient.waehleFeld(x,y);
+                gameClient.waehleFeld(x,y);
             }
         }
     }
