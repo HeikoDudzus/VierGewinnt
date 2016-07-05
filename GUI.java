@@ -128,7 +128,11 @@ public class GUI extends JFrame implements ActionListener
     }
 
     private void verbinde(String pIP, int pPort) {
-        gameClient = new GameClient(pIP, pPort, buttons, nachrichten, spielerAktiv1, spielerAktiv2, gewonnen, aktiv);
+        try {
+            gameClient = new GameClient(pIP, pPort, buttons, nachrichten, spielerAktiv1, spielerAktiv2, gewonnen, aktiv);
+        } catch (Exception e) {
+            nachrichten.append("Verbindung zu "+pIP+":"+pPort+ " nicht möglich");
+        }
     }
 
     private void leereButtonBeschriftung()
