@@ -1,6 +1,6 @@
 
 /**
- * @author Lucia Scheibe
+ * @author 
  * @version 
  */
 public class SpielButton extends javax.swing.JButton
