@@ -5,13 +5,13 @@ import java.util.regex.*;
 /**
  * Write a description of class GameClient here.
  * 
- * @author Heiko Dudzus (Die Hinterbaenkler)
+ * @author Heiko Dudzus (Die Hinterbänkler)
  * @version 2016-06-24
  */
 
 public class GameClient extends Client
 {
-    // Server gibt regelmaessig Meldungen ueber den Zustand des eigenen Spielers
+    // Server gibt regelmäßig Meldungen über den Zustand des eigenen Spielers
     //private boolean aktiv;
     private boolean won;
     private boolean lost;
@@ -28,14 +28,6 @@ public class GameClient extends Client
 
     /**
      * Constructor for objects of class GameClient
-     * @param pIPAdresse IP-Adresse bzw. Domain des Servers
-     * @param pPortNr Portnummer des Sockets
-     * @param pButtons Array von Buttons, das die Spielfelder darstellt
-     * @param pAusgabe Textfeld, in das die Server-Meldungen geschrieben werden
-     * @param pEigenerName Feld, in das der Client den eigenen Namen schreibt
-     * @param pGegnerName Feld, in das der Client den Namen des Gegners schreibt
-     * @param pGewonnen Feld, in das der Client den Gewinner-Status schreibt
-     * @param pAktiv Label, das anzeigt, ob der Spieler an der Reihe ist
      */
     public GameClient(String pIPAdresse, int pPortNr, SpielButton[][] pButtons, JTextArea pAusgabe,
     JLabel pEigenerName, JLabel pGegnerName, JLabel pGewonnen, SpielLabel pAktiv)
@@ -53,10 +45,6 @@ public class GameClient extends Client
         //unentschieden = false;
     }
 
-    /**
-     * Eine Nachricht vom Server wird verarbeitet.
-     * @param pMessage Nachricht, die vom Server kommt
-     */
     public void processMessage(String pMessage) {
         // Nachricht für Mensch oder Maschine?
         if (pMessage != null && !pMessage.startsWith("+") && !pMessage.startsWith("-")) {
@@ -76,7 +64,7 @@ public class GameClient extends Client
                     bAktiv.setGameColor(Color.RED);
                 }
                 if (stuecke[0].equals("+WON")) {
-                    gewonnen.setText("Gewonnen! Herzlichen Gl�ckwunsch");
+                    gewonnen.setText("Gewonnen! Herzlichen Glückwunsch");
                 }
                 if (stuecke[0].equals("+LOST")) {
                     gewonnen.setText("Leider verloren!");
@@ -115,29 +103,18 @@ public class GameClient extends Client
         }
     }
 
-    /**
-     * Ein gew�hltes Spielfeld wird gemaess Protokoll dem Server gemeldet.
-     * @param pI Spalte (zwischen 0 und 6)
-     * @param pJ Zeile (zwischen 0 und 6)
-     */
     public void waehleFeld(int pI, int pJ) {
         super.send("MOVE " + pI + " " + pJ);
     }
 
-    /**
-     * Ein neues Spiel wird beim Server gemaess Protokoll angefordert.
-     */
     public void fordereNeuesSpiel() {
         super.send("NEW");
     }
 
-    /**
-     * Der Client meldet sich vom Server ab.
-     */
     public void beenden() {
         super.send("QUIT");
     }
-
+    
     private void leereButtonBeschriftung()
     {
         for(int i=0; i<7; i++)
@@ -150,13 +127,19 @@ public class GameClient extends Client
         }
         //repaint();
     }
-
-    /**
-     * Der Client fordert einen Nickname an.
-     * @param pName angeforderter Nickname
-     */
+    
     public void setzeNamen(String pName) {
         // Sonderzeichen entfernen mit regex
         super.send("NICK " + pName);
     }
+
+    //     public void paint(java.awt.Graphics g){
+    //         paint(g);
+    //          g.setColor(gameColor);
+    //          g.fillOval(0, 0,this.getWidth(),this.getHeight());
+    //        
+    //     }
+    //public boolean gibAktiv() {
+    //    return aktiv;
+    //}
 }

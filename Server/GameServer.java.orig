@@ -1,9 +1,7 @@
- 
-
 /**
  * Klasse GameServer.
  * 
- * @author Heiko Dudzus, Gerrit (Die Hinterbaenkler)
+ * @author Heiko Dudzus, Gerrit (Die Hinterbänkler)
  * @version 2016-04-27
  */
 
@@ -16,7 +14,6 @@ public class GameServer extends Server implements Zustand
 
     /**
      * Konstruktor fuer Objekte der Klasse GameServer
-     * @param port Portnummer, auf der der Server lauschen soll
      */
     public GameServer(int port)
     {
@@ -27,11 +24,6 @@ public class GameServer extends Server implements Zustand
         System.out.println("Der Server lauscht an Port "+port+"!");
     }
 
-    /**
-     * Eine neue Verbindung wird aufgenommen.
-     * @param pClientIP IP-Nummer des verbindenden Clients
-     * @param pClientPort Portnummer des Clients
-     */
     public void processNewConnection(String pClientIP, int pClientPort) {
         send(pClientIP, pClientPort, "Herzlich Willkommen auf dem Vier-Gewinnt-Gameserver!");
         send(pClientIP, pClientPort, "\"QUIT\" beendet die Verbindung!");
@@ -41,12 +33,6 @@ public class GameServer extends Server implements Zustand
         send(pClientIP, pClientPort, "Waehlen Sie einen Nickname mit NICK <name>");
     }
 
-    /**
-     * Eine neue Nachricht eines Clients wird verarbeitet.
-     * @param pClientIP IP-Nummer des anfragenden Clients
-     * @param pClientPort Portnummer des Client-Sockets
-     * @param pMessage Nachricht des Clients
-     */
     public void processMessage(String pClientIP, int pClientPort, String pMessage) {
         Spieler spieler = sucheClientNachIPUndPort(pClientIP, pClientPort);
         //System.out.println(spieler.gibName());
@@ -66,11 +52,6 @@ public class GameServer extends Server implements Zustand
         }
     }
 
-    /**
-     * Nachricht eines noch nicht benannten Spielers wird verarbeitet.
-     * @param pClient anfragender Spieler
-     * @param pMessage Nachricht des Spielers
-     */
     private void processNickname(Spieler pClient, String pMessage){
         String clientIP = pClient.gibIP();
         int clientPort = pClient.gibPort();
@@ -99,11 +80,6 @@ public class GameServer extends Server implements Zustand
         } 
     }
 
-    /**
-     * Nachricht eines wartenden Spielers wird verarbeitet.
-     * @param pClient anfragender Spieler
-     * @param pMessage Nachricht des Spielers
-     */
     private void processWait(Spieler pClient, String pMessage) {
         String clientIP = pClient.gibIP();
         int clientPort = pClient.gibPort();
@@ -113,12 +89,7 @@ public class GameServer extends Server implements Zustand
             closeConnection(clientIP, clientPort);
         }
     }
-    
-    /**
-     * Nachricht eines passiven Spielers wird verarbeitet.
-     * @param pClient anfragender Spieler
-     * @param pMessage Nachricht des Spielers
-     */
+
     private void processPassive(Spieler pClient, String pMessage) {
         String clientIP = pClient.gibIP();
         int clientPort = pClient.gibPort();
@@ -141,12 +112,7 @@ public class GameServer extends Server implements Zustand
             send(clientIP, clientPort, "ERR it is not your turn");
         }
     }
-    
-    /**
-     * Nachricht des Spielers, der am Zug ist, wird verarbeitet.
-     * @param pClient anfragender Spieler
-     * @param pMessage Nachricht des Spielers
-     */
+
     private void processActive(Spieler pClient, String pMessage) {
         String clientIP = pClient.gibIP();
         int clientPort = pClient.gibPort();
@@ -223,11 +189,6 @@ public class GameServer extends Server implements Zustand
         }
     }
 
-    /**
-     * Nachricht eines Spielers, der ein Spiel beendet hat, wird verarbeitet.
-     * @param pClient anfragender Spieler
-     * @param pMessage Nachricht des Spielers
-     */
     private void processOver(Spieler pClient, String pMessage) {
         String clientIP = pClient.gibIP();
         int clientPort = pClient.gibPort();
@@ -254,11 +215,7 @@ public class GameServer extends Server implements Zustand
             send(pClient.gibIP(), pClient.gibPort(), "ERR unknown command");
         }
     }
-    
-    /**
-     * Ein Spiel wird aus der Liste aller aktuelle Spiele entfernt.
-     * @param pSpiel das zu entfernende Spiel
-     */
+
     private void loescheSpielAusListe(VierGewinntSpiel pSpiel) {
         spiele.toFirst();
         while (spiele.hasAccess()) {
@@ -266,11 +223,7 @@ public class GameServer extends Server implements Zustand
             spiele.next();
         }
     }
-    
-    /**
-     * Ein Spieler wird aus der Spielerliste entfernt.
-     * @param der zu entfernende Spieler
-     */
+
     private void loescheSpieler(Spieler pSpieler) {
         spielerListe.toFirst();
         while (spielerListe.hasAccess()) {
@@ -283,12 +236,6 @@ public class GameServer extends Server implements Zustand
         if (warteschlange.front() == pSpieler) warteschlange.dequeue();
     }
 
-    /**
-     * Der Spieler zu einer IP-Nummer und Portnummer wird in der Spielerliste gesucht.
-     * @param pClientIP IP-Nummer eines Spielers
-     * @param Portnummer
-     * @return Spieler
-     */
     private Spieler sucheClientNachIPUndPort(String pClientIP, int pClientPort){
         spielerListe.toFirst();
         while (spielerListe.hasAccess()) {
@@ -301,11 +248,6 @@ public class GameServer extends Server implements Zustand
         return null;
     }
 
-    /**
-     * Es wird geprueft, ob der Name schon in der Spielerliste des Servers vorhanden ist.
-     * @param pName angefragter Name
-     * @return Wahrheitswert: Name schon vergeben?
-     */
     private boolean nameVorhanden(String pName) {
         spielerListe.toFirst();
         while (spielerListe.hasAccess()) {
@@ -356,12 +298,7 @@ public class GameServer extends Server implements Zustand
             registriereSpielInDB(spieler1, spieler2);
         }
     }
-    
-    /**
-     * Zu einem gegebenen Spieler wird das derzeit gespielte Spiel gesucht.
-     * @param pSpieler Der gegebene Spieler
-     * @return Gespieltes Spiel
-     */
+
     private VierGewinntSpiel gibSpielNachSpieler(Spieler pSpieler) {
         spiele.toFirst();
         while (spiele.hasAccess()) {
@@ -396,18 +333,9 @@ public class GameServer extends Server implements Zustand
         return out;
     }
 
-    /**
-     * Der Gewinn eines Spielers wird in der Datenbank registriert.
-     * @param pSpieler Sieger des Spiels
-     */
     private void registriereGewinnerInDB(Spieler pSpieler) {
     }
-    
-    /**
-     * Ein begonnenes Spiel wird in der Datenbank registriert.
-     * @param pSpieler1 erster Spieler
-     * @param pSpieler2 zweiter Spieler
-     */
+
     private void registriereSpielInDB(Spieler pSpieler1, Spieler pSpieler2) {
     }
 
