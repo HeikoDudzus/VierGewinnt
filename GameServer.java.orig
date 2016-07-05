@@ -97,19 +97,17 @@ public class GameServer extends Server implements Zustand
         Spieler gegenspieler = s.gibGegenspieler(pClient);
         if (pMessage.equals("QUIT")) {
             send(clientIP, clientPort, "+OK see you soon");
-            try {
+            if (gegenspieler != null) {
                 send(gegenspieler.gibIP(), gegenspieler.gibPort(), "+WON");
                 gegenspieler.setzeZustand(OVER);
                 registriereGewinnerInDB(gegenspieler);
-            } catch (Exception e) {
-                System.out.println("Gegenspieler nicht mehr vorhanden!");
             }
             s.loescheSpieler(pClient);
             if (s.beideSpielerWeg()) loescheSpielAusListe(s);
             loescheSpieler(pClient);
             closeConnection(clientIP, clientPort);
         } else {
-            send(clientIP, clientPort, "ERR it is not your turn");
+            send(clientIP, clientPort, "-ERR it is not your turn");
         }
     }
 
@@ -145,22 +143,14 @@ public class GameServer extends Server implements Zustand
                         if (s.spielerGewonnen(pClient.gibSymbol())) {
                             send(clientIP, clientPort, "+WON");
                             registriereGewinnerInDB(pClient);
+                            send(gegenspieler.gibIP(), gegenspieler.gibPort(), "+LOST");
                             pClient.setzeZustand(OVER);
-                            try {
-                                send(gegenspieler.gibIP(), gegenspieler.gibPort(), "+LOST");
-                                gegenspieler.setzeZustand(OVER);
-                            } catch (Exception e) {
-                                System.out.println("Gegenspieler nicht mehr vorhanden!");
-                            }
+                            gegenspieler.setzeZustand(OVER);
                         } else if (s.gibAlleFelderVoll()) {
                             send(clientIP, clientPort, "+TIED");
+                            send(gegenspieler.gibIP(), gegenspieler.gibPort(), "+TIED");
                             pClient.setzeZustand(OVER);
-                            try {
-                                send(gegenspieler.gibIP(), gegenspieler.gibPort(), "+TIED");
-                                gegenspieler.setzeZustand(OVER);
-                            } catch (Exception e) {
-                                System.out.println("Gegenspieler nicht mehr vorhanden!");
-                            }
+                            gegenspieler.setzeZustand(OVER);
                         }
                     } else {
                         send(clientIP, clientPort, "move not possible");
@@ -170,22 +160,20 @@ public class GameServer extends Server implements Zustand
         } else if (stuecke.length == 1) {
             if (pMessage.equals("QUIT")) {
                 send(clientIP, clientPort, "+OK see you soon");
-                try {
+                if (gegenspieler != null) {
                     send(gegenspieler.gibIP(), gegenspieler.gibPort(), "+WON");
                     gegenspieler.setzeZustand(OVER);
                     registriereGewinnerInDB(gegenspieler);
-                } catch (Exception e) {
-                    System.out.println("Gegenspieler nicht mehr vorhanden!");
                 }
                 s.loescheSpieler(pClient);
                 if (s.beideSpielerWeg()) loescheSpielAusListe(s);
                 loescheSpieler(pClient);
                 closeConnection(clientIP, clientPort);
             } else {
-                send(clientIP, clientPort, "ERR unknown command");
+                send(clientIP, clientPort, "-ERR unknown command");
             }
         } else {
-            send(clientIP, clientPort, "ERR unknown command");
+            send(clientIP, clientPort, "-ERR unknown command");
         }
     }
 
@@ -212,7 +200,7 @@ public class GameServer extends Server implements Zustand
             loescheSpieler(pClient);
             closeConnection(clientIP, clientPort);
         } else {
-            send(pClient.gibIP(), pClient.gibPort(), "ERR unknown command");
+            send(pClient.gibIP(), pClient.gibPort(), "-ERR unknown command");
         }
     }
 
@@ -234,6 +222,17 @@ public class GameServer extends Server implements Zustand
             spielerListe.next();
         }
         if (warteschlange.front() == pSpieler) warteschlange.dequeue();
+    }
+
+    private void loescheClientNachIPUndPort(String pClientIP, int pClientPort){
+        spielerListe.toFirst();
+        while (spielerListe.hasAccess()) {
+            Spieler spieler = spielerListe.getContent();
+            if (spieler.vergleicheIPUndPort(spieler.gibIP(), spieler.gibPort())) {
+                spielerListe.remove();
+            }
+            spielerListe.next();
+        }
     }
 
     private Spieler sucheClientNachIPUndPort(String pClientIP, int pClientPort){
@@ -258,6 +257,18 @@ public class GameServer extends Server implements Zustand
             spielerListe.next();
         }
         return false;
+    }
+
+    private Spieler gibSpielerNachNamen(String pName) {
+        spielerListe.toFirst();
+        while (spielerListe.hasAccess()) {
+            Spieler spieler = spielerListe.getContent();
+            if (pName.equals(spieler.gibName())) {
+                return spieler;
+            }
+            spielerListe.next();
+        }
+        return null;
     }
 
     public void processClosedConnection(String pClientIP, int pClientPort) {
@@ -293,7 +304,7 @@ public class GameServer extends Server implements Zustand
             send(spieler1.gibIP(), spieler1.gibPort(), "+ACTIVE");
             send(spieler2.gibIP(), spieler2.gibPort(), "+PASSIVE");
             send(spieler1.gibIP(), spieler1.gibPort(), "-Spielzuege werden mit MOVE <x> <y> gesetzt.");
-            send(spieler2.gibIP(), spieler2.gibPort(), "-Spielzuege werden mit MOVE <x> <y> gesetzt.");
+            send(spieler1.gibIP(), spieler1.gibPort(), "-Spielzuege werden mit MOVE <x> <y> gesetzt.");
             System.out.println("Spiel gestartet mit "+spieler1.gibName()+" und "+spieler2.gibName());
             registriereSpielInDB(spieler1, spieler2);
         }
@@ -338,10 +349,56 @@ public class GameServer extends Server implements Zustand
 
     private void registriereSpielInDB(Spieler pSpieler1, Spieler pSpieler2) {
     }
+    /*private void beendeSpiel(VierGewinntSpiel pSpiel) 
+    {
+
+    }*/
 
     //Fuer die Verwendung auf Linux-Servern und Windows-Clients
     /*
     public void send(String pClientIP, int pClientPort, String pMessage){
     super.send(pClientIP,pClientPort,pMessage+"\r");
-    } */
     }
+
+    public void sendToAll(String pMessage) {
+    super.sendToAll(pMessage+"\r");
+    }
+     */
+
+    //     public void processWait(Spieler pClient, String pMessage) {
+    //         String clientIP = pClient.gibIP();
+    //         int clientPort = pClient.gibPort();
+    //         String[] stuecke = pMessage.split(" ");
+    //         if (stuecke.length == 2) {
+    //             if (stuecke[0].equals("PLAY")){
+    //                 // Ist ein Client mit dem gewuenschten Namen vorhanden?
+    //                 Spieler gegenspieler = gibSpielerNachNamen(stuecke[1]);
+    //                 if (gegenspieler != null){
+    //                     // Zustände ändern
+    //                     pClient.setzeZustand(PASSIVE);
+    //                     gegenspieler.setzeZustand(PASSIVE);
+    //                     send(clientIP, clientPort, "+STARTED " + stuecke[1]);
+    //                     send(gegenspieler.gibIP(), gegenspieler.gibPort(), "+STARTED " + pClient.gibName());
+    //                 } else {
+    //                     send(clientIP, clientPort, "-WAIT opponent not found");
+    //                 }
+    //             }
+    // 
+    //         } else if (pMessage.equals("QUIT")){
+    //             send(clientIP, clientPort, "+OK see you soon");
+    //             closeConnection(clientIP, clientPort);
+    //             loescheClientNachIPUndPort(clientIP, clientPort);
+    //             beendeSpiel();
+    //         } else if (pMessage.equals("LISTPLAYERS")){
+    //             send(clientIP, clientPort, "List of other players: ");
+    //             spielerListe.toFirst();
+    //             while (spielerListe.hasAccess()) {
+    //                 Spieler spieler = spielerListe.getContent();
+    //                 send(clientIP, clientPort, spieler.gibName());
+    //                 spielerListe.next();
+    //             }
+    //         } else {
+    //             send(clientIP, clientPort, "-ERR unknown command");
+    //         } 
+    //     }
+}
